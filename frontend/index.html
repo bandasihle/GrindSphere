@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrindSphere</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="images/logo4 copy.png" alt="HustleSphere Logo">
+            </div>
+    
+            <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+    
+            <div class="nav-container" id="nav-container">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="Service.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="Team.html">Team</a></li>
+                </ul>
+    
+                <ul class="auth-links">
+                    <li><a href="role.html" id="signup-btn" class="btns">Sign Up</a></li>
+                    <li><a href="login.html" id="login-btn" class="btns">Login</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
+    <main>
+        <section class="welcome">
+            <h1>Welcome to GrindSphere</h1>
+            <p>Connect with fellow students offering services and showcase your own business.</p>
+        
+        </section>
+
+        <section class="search-section">
+            <input type="text" placeholder="Search services..." id="search-bar" class="search-bar">
+        </section>
+
+        <!-- Category Bubbles Section -->
+        <section class="category-bubbles">
+            <div class="bubble">Nails</div>
+            <div class="bubble">Hair</div>
+            <div class="bubble">Tutoring</div>
+            <div class="bubble">Photography</div>
+            <div class="bubble">Barber</div>
+        </section>
+
+        <!-- Top Hustlers Section (Profiles in a Row) -->
+        <section class="top-hustlers">
+            <h2>Top Hustlers</h2>
+            <div class="hustler-cards">
+                <div class="hustler-card">
+                    <img src="nailtech.jpg" alt="Nail Tech">
+                    <h3>Nails by Sandi</h3>
+                    <p>Professional nail services with a touch of style!</p>
+                </div>
+                <div class="hustler-card">
+                    <img src="photos.jpg" alt="Photography Service">
+                    <h3>FLICKSbyTHABi</h3>
+                    <p>Capture memories with professional photography.</p>
+                </div>
+                <div class="hustler-card">
+                    <img src="codeamp.jpg" alt="Coding Service">
+                    <h3>codeAMP</h3>
+                    <p>Bringing your app ideas to life with quality code!</p>
+                </div>
+                <div class="hustler-card">
+                    <img src="cakezee.jpg" alt="Baking Service">
+                    <h3>CakesZee</h3>
+                    <p>Delicious custom cakes for all occasions!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <!-- Your footer content -->
+    </footer>
+       
+    </main>
+
+   <!-- Sign Up Modal -->
+<div id="signup-modal" class="modal">
+    <div class="modal-content">
+        <span id="close-btn" class="close-btn">&times;</span>
+        <h2>Choose Your Path</h2>
+        <p>Before you dive in let us know if you're here to offer services <strong>(Hustler)</strong> or find services <strong>(Customer)</strong> :</p>
+        <div class="modal-buttons">
+            <a href="hustler-signup.html" class="role-btn hustler-btn">Hustler</a>
+            <a href="customer-signup.html" class="role-btn customer-btn">Customer</a>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Link to external JavaScript file -->
+<script src="script.js"></script>
+
+<script>
+    const toggleBtn = document.getElementById('menu-toggle');
+    const navContainer = document.getElementById('nav-container');
+
+    toggleBtn.addEventListener('click', () => {
+        navContainer.classList.toggle('show');
+    });
+</script>
+
+
+    <footer>
+        <p>&copy; 2025 GrindSphere | All rights reserved</p>
+    </footer>
+</body>
+</html>
