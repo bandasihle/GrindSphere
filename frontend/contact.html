@@ -1,1 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrindSphere</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="images/logo4 copy.png" alt="HustleSphere Logo">
+            </div>
+    
+            <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+    
+            <div class="nav-container" id="nav-container">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="Service.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="Team.html">Team</a></li>
+                </ul>
+    
+                <ul class="auth-links">
+                    <li><a href="role.html" id="signup-btn" class="btns">Sign Up</a></li>
+                    <li><a href="login.html" id="login-btn" class="btns">Login</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
+    <section class="contact">
+        <h2>Contact us</h2>
+        <p>if you have any questions or enquiries, feel free to reach out to us!</p>
+        <div class="bigcontact">
+        <div class="contact-info">
+            <div class="contact-item">
+            <h3>email</h3>
+            <p>info@GrindSphere.com</p>
+            </div>
+        
+        <div class="contact-item">
+            <h3>phone</h3>
+            <p>+27211405087</p>
+        </div>
+        <div class="contact-item">
+            <h3>Address</h3>
+            <p>123 student ave, Mbombela , South Africa</p>
+        </div>
+
+        <section class="map">
+            <h2>Our Location</h2>
+            <div id="map">
+                <!-- Here you can embed Google Maps iframe or use an API -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3603.0335492988424!2d30.97920067565337!3d-25.43714187755726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ee835ddde836b49%3A0xfe875f0851caa5cf!2sUniversity%20of%20Mpumalanga!5e0!3m2!1sen!2sza!4v1742977034142!5m2!1sen!2sza"> </iframe>
+            </div>
+        </section>
+    </div>
+
+
+        <div class="contact-form" > 
+            <h3>Drop us a message</h3>
+            <form action="#" method="POST"> 
+                <input type="text" name="name" placeholder="your name" required>
+                <input type="email" name="email" placeholder="your email" required>
+                <textarea name="message" placeholder="your message" required>  </textarea>
+                <button type="submit">send message</button>
+
+            </form>
+        </div>
+    </section>
+</div>
+
+   
+</main>
+<script>
+    const toggleBtn = document.getElementById('menu-toggle');
+    const navContainer = document.getElementById('nav-container');
+
+    toggleBtn.addEventListener('click', () => {
+        navContainer.classList.toggle('show');
+    });
+</script>
+
+
+<footer>
+    <p>&copy; 2025 GrindSphere | All rights reserved</p>
+</footer>
+    
+</body>
+</html>

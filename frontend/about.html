@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrindSphere</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="images/logo4 copy.png" alt="HustleSphere Logo">
+            </div>
+    
+            <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+    
+            <div class="nav-container" id="nav-container">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="Service.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="Team.html">Team</a></li>
+                </ul>
+    
+                <ul class="auth-links">
+                    <li><a href="role.html" id="signup-btn" class="btns">Sign Up</a></li>
+                    <li><a href="login.html" id="login-btn" class="btns">Login</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
+    <main>
+        <section class=" about">
+            <h1> About GrindSphere</h1>
+            <p> GrindSphere is a platform designed exclusively for university student, helping them connect with affordable services offered by fellow student</p>
+
+            <h2> Our mission </h2>
+            <p> We aim to empower student by providing a space where they can show case their skills ,earn income, and access quality services within the university community </p>
+
+            <h2> How it works </h2>
+            <p> Students can sign up as either **Hustler** (service providers) or **Customers** (those looking for services). Hustlers create profiles. upload porfoilios, and set their prices, while Customers browse and hire based on their needs.</p>
+            
+            <h2> Why choose us?</h2>
+            <ul> 
+                <li> <strong> Affordable services:</strong> Get quality services at student-friendly prices. </li>
+                <li> <strong> Support student hustles :</strong> Help your peers grow  their business. </li>
+                <li> <strong> Exclusive to students:</strong> Ensures trust and a safe environment. </li>
+            </ul>
+
+            
+        </section>
+    </main>
+    <script>
+        const toggleBtn = document.getElementById('menu-toggle');
+        const navContainer = document.getElementById('nav-container');
+    
+        toggleBtn.addEventListener('click', () => {
+            navContainer.classList.toggle('show');
+        });
+    </script>
+    
+    
+
+    <footer>
+        <p>&copy; 2025 GrindSphere | All rights reserved</p>
+    </footer>
+    
+</body>
+</html>
