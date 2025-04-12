@@ -714,7 +714,8 @@ footer{
     margin: 0 10px;
     transition: 0.3s ease;
     color: white;
-    font-size: 18px;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .role:hover, .role.selected{
@@ -750,4 +751,12 @@ footer{
 
 .login-text a:hover{
     text-decoration: underline;
+}
+
+.role-desc{
+    font-size: 14px;
+    color: white;
+    margin-top: 10px;
+    text-align: center;
+    max-width: 200px;
 }
