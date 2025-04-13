@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="role-container">
+        <h2>How do you want to join</h2>
+        <div class="roles">
+            <div class="role" id="customer">Customer
+                <p class="role-desc"> I'm a client looking for services</p>
+            </div>
+            <div class="role" id="hustler">Hustler 
+                <p class="role-desc">I want to offer my skills and connect with fellow students looking for services</p>
+            </div>
+        </div>
+
+        <button id="join-btn" disabled>Join</button>
+        <div class="login-text">Already have an account? <a href="login.html">Log in</a></div>
+    </div>
+
+    <script>
+        const customer = document.getElementById('customer');
+        const hustler = document.getElementById('hustler');
+        const joinBtn = document.getElementById('join-btn');
+        let selectedRole = '';
+
+        customer.addEventListener('click', () => {
+            selectedRole = 'customer';
+            customer.classList.add('selected');
+            hustler.classList.remove('selected');
+            joinBtn.disabled = false;
+            joinBtn.textContent = 'Join as Customer';
+        });
+
+        hustler.addEventListener('click', () => {
+            selectedRole = 'hustler';
+            hustler.classList.add('selected');
+            customer.classList.remove('selected');
+            joinBtn.disabled = false;
+            joinBtn.textContent = 'Join as Hustler';
+        });
+
+        joinBtn.addEventListener('click', () => {
+            if (selectedRole === 'customer') {
+                window.location.href = 'signup-customer.html';
+            } else if (selectedRole === 'hustler') {
+                window.location.href = 'signup-hustler.html';
+            }
+        });
+ 
+    </script>
+
+<footer>
+    <p>&copy; 2025 GrindSphere | All rights reserved</p>
+</footer>
+
+</body>
+</html>
