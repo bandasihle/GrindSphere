@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GrindSphere</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Service.css" />
 </head>
+
 <body>
     <header>
         <nav>
             <div class="logo">
                 <img src="images/logo4 copy.png" alt="HustleSphere Logo">
             </div>
-    
             <div class="menu-toggle" id="menu-toggle">&#9776;</div>
-    
+
             <div class="nav-container" id="nav-container">
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
@@ -23,24 +25,80 @@
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="Team.html">Team</a></li>
                 </ul>
-    
+
+
+            </div>
+            <div>
                 <ul class="auth-links">
                     <li><a href="signup.html" id="signup-btn" class="btns">Sign Up</a></li>
                     <li><a href="login.html" id="login-btn" class="btns">Login</a></li>
                 </ul>
             </div>
-        </nav>
     </header>
 
-    <script>
-        const toggleBtn = document.getElementById('menu-toggle');
-        const navContainer = document.getElementById('nav-container');
-    
-        toggleBtn.addEventListener('click', () => {
-            navContainer.classList.toggle('show');
-        });
-    </script>
-    
-    
+    <body>
+        <div class="page-wrapper">
 
-    
+            <section class="services-section">
+                <h1>Our Services</h1>
+                <div class="services-container">
+                    <div class="service-card">
+                        <h2>Web Design</h2>
+                        <p>We create clean and responsive websites tailored to your needs.</p>
+                        <p class="provider">Provided by: Jane Doe</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>SEO Optimization</h3>
+                        <p>Improve your website’s visibility on search engines.</p>
+                        <p class="provider">Provided by: John Smith</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Barber</h4>
+                        <p> We provide the best and most affordable haircuts suitable for your budget. </p>
+                        <P class="provider"> Provided by : Sihle Banda.</P>
+                    </div>
+                    <div class="service-card">
+                        <h5>Nail-tech</h5>
+                        <p> Ladies and gentlewoman irregadless of one gender, we provide the best nail services <br>
+                            come and see for yourself</p>
+                        <p class="provider"> Provided by: Lesego Mahlakoane.</p>
+                    </div>
+                    <div class=" service-card">
+                        <h6> Tutors </h6>
+                        <p> For the best tutoring services, you can come to us for we only specialise in
+                            what is in your best interest.</p>
+                        <P class="provider"> Provided by : Rendani Ramaphosa </P>
+                        <P class="provider"> Provided by : Sihle Banda </P>
+                        <P class="provider"> Provided by : Armstrong Makome </P>
+                    </div>
+                    <div class="service-card">
+                        <h4>Photo-<br>graphy</h7>
+                            <p> Cameras are not our thing but once we put our hands on them they listen and do as
+                                instructed</p>
+                            <P class="provider"> Provided by : Faith Nkoka.</P>
+                            <P class="provider"> Provided by : Amelia nkinika.</P>
+                    </div>
+
+                </div>
+        </div>
+        <!-- Add more service cards as needed -->
+        </div>
+        </section>
+
+        </div>
+
+        </nav>
+
+
+
+        <script>
+            const toggleBtn = document.getElementById('menu-toggle');
+            const navContainer = document.getElementById('nav-container');
+
+            toggleBtn.addEventListener('click', () => {
+                navContainer.classList.toggle('show');
+            });
+        </script>
+    </body>
+
+</html>
