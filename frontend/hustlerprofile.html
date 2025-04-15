@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="profile-container">
+        <h2>Your Profile</h2>
+        <div class="profile-info">
+            <div class="profile-picture">
+                <img id="profile-picture-img" src="images/default-profile.png" alt="Profile Picture">
+                <button id="change-picture-btn">Change Picture</button>
+            </div>
+            <h3>Name: <span id="profile-name">John Doe</span></h3>
+            <p><strong>Email:</strong> <span id="profile-email">johndoe@example.com</span></p>
+            <p><strong>About You:</strong> <span id="profile-bio">Your bio here</span></p>
+
+            <div class="socials">
+                <h4>Social Media</h4>
+                <div id="social-icons">
+                    <!-- Icons will appear here -->
+                    <a href="#" id="profile-instagram" target="_blank">
+                        <img src="images/instagram-icon.png" alt="Instagram" />
+                    </a>
+                    <a href="#" id="profile-whatsapp" target="_blank">
+                        <img src="images/whatsapp-icon.png" alt="WhatsApp" />
+                    </a>
+                    <a href="#" id="profile-tiktok" target="_blank">
+                        <img src="images/tiktok-icon.png" alt="TikTok" />
+                    </a>
+                </div>
+            </div>
+
+            <button id="edit-profile-btn">Edit Profile</button>
+        </div>
+
+        <!-- Edit Form (Initially hidden) -->
+        <div class="edit-form" id="edit-form">
+            <h3>Edit Your Profile</h3>
+            <form id="edit-profile">
+                <div class="input-group">
+                    <label for="edit-name">Name</label>
+                    <input type="text" id="edit-name" name="name" value="John Doe">
+                </div>
+                <div class="input-group">
+                    <label for="edit-bio">About You</label>
+                    <textarea id="edit-bio" name="bio">Your bio here</textarea>
+                </div>
+                <div class="input-group">
+                    <label for="edit-instagram">Instagram Username</label>
+                    <input type="text" id="edit-instagram" name="instagram" value="instagram_link">
+                </div>
+                <div class="input-group">
+                    <label for="edit-whatsapp">WhatsApp Number</label>
+                    <input type="text" id="edit-whatsapp" name="whatsapp" value="whatsapp_number">
+                </div>
+                <div class="input-group">
+                    <label for="edit-tiktok">TikTok Username</label>
+                    <input type="text" id="edit-tiktok" name="tiktok" value="tiktok_link">
+                </div>
+                <div class="input-group">
+                    <label for="edit-profile-picture">Profile Picture</label>
+                    <input type="file" id="edit-profile-picture" name="profile-picture" accept="image/*">
+                </div>
+                <button type="submit" id="save-profile-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
