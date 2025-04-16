@@ -1,5 +1,5 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     color: #ede6e6;
@@ -14,56 +14,22 @@ body {
     height: 80%;
 }
 
-.services-section h2 {
+.services-section,
+h2,
+h4,
+h5,
+h6,
+h7 {
     font-size: 2.5rem;
     margin-bottom: 30px;
-    color: #37599f;
+    color: #bb0cec;
     flex: 1 1 250px;
     box-sizing: border-box;
+    font-style: italic;
+
 }
 
-.services-section h3 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #9433a3;
-    flex: 1 1 250px;
-    box-sizing: border-box;
-}
 
-.services-section h4 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #369420;
-    flex: 1 1 250px;
-    box-sizing: border-box;
-}
-
-.service-card h5 {
-    max-width: 90%;
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    color: rgb(145, 71, 159);
-    flex: 1 1 250px;
-    box-sizing: border-box;
-}
-
-.services-section h6 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #456c94;
-    flex: 1 1 250px;
-    box-sizing: border-box;
-}
-
-.services-section h7 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #3d783b;
-    flex: 1 1 250px;
-    box-sizing: border-box;
-    text-align: left;
-    padding: 1rem .75rem;
-}
 
 .services-container {
     display: grid;
@@ -95,7 +61,7 @@ html {
 
 .service-card {
     max-width: 90%;
-    background-color: #f0f0f0;
+    background-color: #f1f2f7;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -106,11 +72,7 @@ html {
     transform: translateY(-5px);
 }
 
-.service-card h3 {
-    max-width: 90%;
-    font-size: 1.5rem;
-    color: #0077b6;
-}
+
 
 .service-card p {
     max-width: 90%;
