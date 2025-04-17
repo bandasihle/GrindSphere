@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=html, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hustler Sign Up|GrindSphere</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="forms.css">
 </head>
 <body>
-    
+  <div class="form-container">
+    <h2>Hustler Sign Up</h2>
+    <form id="hustlerSignupForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+
+      <label for="skill">Skill or Service Offered</label>
+      <input type="text" id="skill" name="skill" required />
+
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="login-text">
+      Already have an account? <a href="login.html">Log in</a>
+  </div>
+  </div>
+
+  <script>
+    document.getElementById('hustlerSignupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const skill = document.getElementById('skill').value;
+
+      const response = await fetch('http://localhost:3000/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, role: 'hustler', skill })
+      });
+
+      const data = await response.json();
+      alert(data.message);
+    });
+  </script>
 </body>
 </html>
