@@ -60,15 +60,18 @@ app.post('/api/services', async (req, res) => {
   }
 });
 
-// Get all services (for customer dashboard)
+// GET all services
 app.get('/api/services', async (req, res) => {
   try {
+    // use promise().execute to get [rows]
     const [rows] = await db.promise().execute('SELECT * FROM services');
-    res.status(200).json(rows);
+    return res.status(200).json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Error fetching services:', err);
+    return res.status(500).json({ message: 'Error fetching services' });
   }
 });
+
 
 // Get single service by ID
 app.get('/api/services/:id', async (req, res) => {
@@ -107,4 +110,18 @@ app.delete('/api/services/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// Fetch all available services for the customer dashboard
+app.get('/api/services', (req, res) => {
+  const query = 'SELECT * FROM services';
+
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error fetching services' });
+    }
+
+    res.status(200).json(results);
+  });
+});
+
 
