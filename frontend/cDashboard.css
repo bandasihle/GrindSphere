@@ -1,0 +1,58 @@
+html,
+body {
+
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #050305, #36123F, #784040, #8F37B1);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+
+>.dashboard {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    background: #a512bc;
+    color: white;
+    padding: 20px;
+    width: 250px;
+    border-radius: 15px;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.content {
+    padding: 20px;
+    flex: 1;
+}
+
+.section {
+    display: block;
+}

@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GrindSphere</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+    <style>
+        .dashboard-btn {
+            background-color: #6d1279;
+            color: white;
+            padding: 12px 24px;
+            margin: 20px;
+            border-radius: 20px;
+            width: fit-content;
+            font-size: 18px;
+        }
+
+        .dashboard-btn:hover {
+            background-color: #09192b;
+        }
+    </style>
+
     <header>
         <nav>
             <div class="logo">
                 <img src="images/logo4 copy.png" alt="HustleSphere Logo">
             </div>
-    
+
             <div class="menu-toggle" id="menu-toggle">&#9776;</div>
-    
+
             <div class="nav-container" id="nav-container">
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
@@ -23,8 +40,10 @@
                     <li><a href="Service.html">Services</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="Team.html">Team</a></li>
+
+
                 </ul>
-    
+
                 <ul class="auth-links">
                     <li><a href="signup.html" id="signup-btn" class="btns">Sign Up</a></li>
                     <li><a href="login.html" id="login-btn" class="btns">Login</a></li>
@@ -32,12 +51,14 @@
             </div>
         </nav>
     </header>
+    <a href="cDashboard.html" class="dashboard-btn">Go to Dashboard</a>
+
 
     <main>
         <section class="welcome">
             <h1>Welcome to Grind$phere</h1>
             <p>Connect with fellow students offering services and showcase your own business.</p>
-        
+
         </section>
 
         <section class="search-section">
@@ -84,27 +105,28 @@
     <footer>
         <!-- Your footer content -->
     </footer>
-       
+
     </main>
 
-   
+
 
 
     <!-- Link to external JavaScript file -->
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
-<script>
-    const toggleBtn = document.getElementById('menu-toggle');
-    const navContainer = document.getElementById('nav-container');
+    <script>
+        const toggleBtn = document.getElementById('menu-toggle');
+        const navContainer = document.getElementById('nav-container');
 
-    toggleBtn.addEventListener('click', () => {
-        navContainer.classList.toggle('show');
-    });
-</script>
+        toggleBtn.addEventListener('click', () => {
+            navContainer.classList.toggle('show');
+        });
+    </script>
 
 
     <footer>
         <p>&copy; 2025 GrindSphere | All rights reserved</p>
     </footer>
 </body>
+
 </html>
