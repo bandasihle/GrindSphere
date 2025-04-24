@@ -1,8 +1,9 @@
+// Required Modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
-const db = require('./db'); // Your database connection
+const db = require('./db'); // Ensure db.js exports both query and promise()
 
 const app = express();
 const port = 3000;
@@ -10,43 +11,60 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// ===========================
+//  Signup Route
+// ===========================
 app.post('/signup', async (req, res) => {
   const { name, email, password, role, skill } = req.body;
 
-  // Check if the user already exists
   db.query('SELECT * FROM users WHERE email = ?', [email], async (err, result) => {
-    if (err) {
-      return res.status(500).json({ message: 'Server error' });
-    }
+    if (err) return res.status(500).json({ message: 'Server error' });
 
-    if (result.length > 0) {
+    if (result.length > 0)
       return res.status(400).json({ message: 'Email is already registered' });
-    }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Insert the new user into the database
     const query = 'INSERT INTO users (name, email, password, role, skill) VALUES (?, ?, ?, ?, ?)';
-    db.query(query, [name, email, hashedPassword, role, skill || null], (err, result) => {
-      if (err) {
-        return res.status(500).json({ message: 'Failed to register user' });
-      }
 
+    db.query(query, [name, email, hashedPassword, role, skill || null], (err) => {
+      if (err) return res.status(500).json({ message: 'Failed to register user' });
       res.status(200).json({ message: 'User registered successfully' });
     });
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+// ===========================
+//  Login Route
+// ===========================
+app.post('/login', async (req, res) => {
+  const { email, password, role } = req.body;
+  try {
+    const [rows] = await db.promise().execute('SELECT * FROM users WHERE email = ? AND role = ?', [email, role]);
+
+    if (rows.length === 0) return res.status(401).json({ message: 'User not found or role mismatch' });
+
+    const user = rows[0];
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
+
+    res.status(200).json({
+      message: 'Login successful',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        skill: user.skill || null
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error during login' });
+  }
 });
 
 // ===========================
-//  Hustler Services Routes
+//  Hustler Service CRUD
 // ===========================
-
-// Create a new service (hustler)
 app.post('/api/services', async (req, res) => {
   const { hustler_id, title, description, price, category, location } = req.body;
   try {
@@ -60,20 +78,15 @@ app.post('/api/services', async (req, res) => {
   }
 });
 
-// GET all services
 app.get('/api/services', async (req, res) => {
   try {
-    // use promise().execute to get [rows]
     const [rows] = await db.promise().execute('SELECT * FROM services');
-    return res.status(200).json(rows);
+    res.status(200).json(rows);
   } catch (err) {
-    console.error('Error fetching services:', err);
-    return res.status(500).json({ message: 'Error fetching services' });
+    res.status(500).json({ message: 'Error fetching services' });
   }
 });
 
-
-// Get single service by ID
 app.get('/api/services/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -85,7 +98,6 @@ app.get('/api/services/:id', async (req, res) => {
   }
 });
 
-// Update service (hustler)
 app.put('/api/services/:id', async (req, res) => {
   const { id } = req.params;
   const { title, description, price, category, location } = req.body;
@@ -100,7 +112,6 @@ app.put('/api/services/:id', async (req, res) => {
   }
 });
 
-// Delete service (hustler)
 app.delete('/api/services/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -111,17 +122,6 @@ app.delete('/api/services/:id', async (req, res) => {
   }
 });
 
-// Fetch all available services for the customer dashboard
-app.get('/api/services', (req, res) => {
-  const query = 'SELECT * FROM services';
-
-  db.query(query, (err, results) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error fetching services' });
-    }
-
-    res.status(200).json(results);
-  });
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
-
-

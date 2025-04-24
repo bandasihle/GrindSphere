@@ -1,103 +1,36 @@
+<!-- customer-dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Customer Dashboard</title>
-    <h1>My Dashboard.</h1>
-    <link rel="stylesheet" href="cDashboard.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Dashboard</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f9fafb; }
+    header { background: #4f46e5; color: white; padding: 1rem; text-align: center; }
+    .container { padding: 2rem; }
+    .search-box { margin-bottom: 2rem; }
+    .search-box input { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 5px; }
+    .result-card { background: white; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 0 8px rgba(0,0,0,0.05); }
+    .result-card h3 { margin-top: 0; }
+  </style>
 </head>
-
 <body>
-    <style>
-        .nav-container {
-            background-color: none;
-            padding: 15px 0;
-            text-align: center;
-            width: fit-content;
-            justify-content: center;
-            border-radius: 15px;
-            width: 100%;
-
-        }
-
-        .nav-links {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            /* spacing between links */
-        }
-
-        .nav-links li a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .nav-links li a:hover {
-            background-color: #bc1abcb0;
-        }
-    </style>
-
-    <style>
-        .dashboard-btn {
-            background-color: #04090c;
-            color: white;
-            padding: 12px 24px;
-            margin: 20px;
-            border-radius: 20px;
-            width: fit-content;
-            font-size: 18px;
-        }
-
-        .dashboard-btn:hover {
-            background-color: #0cb15e;
-        }
-    </style>
-    </head>
-
-</html>
-
-<header>
-
-    <div class="nav-container" id="nav-container">
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="Service.html">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="Team.html">Team</a></li>
-        </ul>
-
-
+  <header>
+    <h1>Customer Dashboard</h1>
+  </header>
+  <div class="container">
+    <div class="search-box">
+      <input type="text" placeholder="Search services..." />
     </div>
-</header>
-<div class="dashboard">
-    <aside class="sidebar">
-        <h2>Welcome Back, <span id="userName">User</span></h2>
-        <ul>
-            <li><a href="#" onclick="showSection('orders')">My Orders</a></li>
-            <li><a href="#" onclick="showSection('wishlist')">Wishlist</a></li>
-            <li><a href="#" onclick="showSection('profile')">Profile</a></li>
-            <li><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
-    </aside>
-
-    <main class="content">
-        <section id="orders" class="section">Your orders will appear here...</section>
-        <section id="wishlist" class="section" style="display:none;">Your wishlist...</section>
-        <section id="profile" class="section" style="display:none;">Your profile info...</section>
-    </main>
-</div>
-
-<script src="script.js"></script>
+    <div class="result-card">
+      <h3>Haircut Services</h3>
+      <p>Clean fades and styling available every weekend.</p>
+    </div>
+    <div class="result-card">
+      <h3>Graphic Design</h3>
+      <p>Logos, posters, and social media designs offered.</p>
+    </div>
+  </div>
 </body>
-
 </html>
