@@ -1,37 +1,115 @@
-<!-- customer-dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customer Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | GrindSphere</title>
+  <link rel="stylesheet" href="/frontend/css/style.css" />
+  <link rel="stylesheet" href="/frontend/css/dashboard.css" />
+
   <style>
-    body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f9fafb; }
-    header { background: #4f46e5; color: white; padding: 1rem; text-align: center; }
-    .container { padding: 2rem; }
-    .search-box { margin-bottom: 2rem; }
-    .search-box input { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 5px; }
-    .result-card { background: white; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 0 8px rgba(0,0,0,0.05); }
-    .result-card h3 { margin-top: 0; }
-    
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background-color: #f3f3f3;
+}
+
+.dashboard {
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 15px 20px;
+  align-items: center;
+}
+
+.nav {
+  margin: 20px 0;
+  display: flex;
+  gap: 15px;
+}
+
+.nav a {
+  background: #2c2c2c;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  background: #444;
+}
+
+main {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #3f51b5;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  background-color: #303f9f;
+}
+
+#logoutBtn {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
   </style>
 </head>
 <body>
-  <header>
-    <h1>Customer Dashboard</h1>
-  </header>
-  <div class="container">
-    <div class="search-box">
-      <input type="text" placeholder="Search services..." />
-    </div>
-    <div class="result-card">
-      <h3>Haircut Services</h3>
-      <p>Clean fades and styling available every weekend.</p>
-    </div>
-    <div class="result-card">
-      <h3>Graphic Design</h3>
-      <p>Logos, posters, and social media designs offered.</p>
-    </div>
+  <div class="dashboard">
+    <header>
+      <h1>Welcome, <span id="customerName">Customer</span>!</h1>
+      <button id="logoutBtn">Log Out</button>
+    </header>
+
+    <nav class="nav">
+      <a href="/frontend/products.html">Shop Products</a>
+      <a href="/frontend/orders.html">My Orders</a>
+      <a href="/frontend/account.html">Account Settings</a>
+      <a href="/frontend/support.html">Support</a>
+    </nav>
+
+    <main>
+      <section>
+        <h2>Start Shopping</h2>
+        <p>Browse our latest products and get started on your coffee journey!</p>
+        <a href="/frontend/products.html" class="btn">View Products</a>
+      </section>
+    </main>
   </div>
+
+  <script>
+    // Display name from localStorage
+    const name = localStorage.getItem('customerName') || 'Customer';
+    document.getElementById('customerName').textContent = name;
+
+    // Logout handler
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = '/frontend/authentication/login.html';
+    });
+  </script>
 </body>
 </html>
