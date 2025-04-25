@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - GrindSphere</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      height: 100vh;
+      background-color: #f4f6f8;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #1e293b;
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 30px;
+      font-size: 20px;
+      color: #38bdf8;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      margin-bottom: 15px;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      color: #38bdf8;
+    }
+
+    .main {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .tag {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="#">Dashboard</a>
+    <a href="#">Users</a>
+    <a href="#">Services</a>
+    <a href="#">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Welcome, Admin</h1>
+
+    <div class="card">
+      <h2>Users</h2>
+      <ul id="usersList"></ul>
+    </div>
+
+    <div class="card">
+      <h2>Services</h2>
+      <ul id="servicesList"></ul>
+    </div>
+  </div>
+
+  <script>
+    fetch('/admin/users', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        const ul = document.getElementById('usersList');
+        data.forEach(user => {
+          const li = document.createElement('li');
+          li.innerHTML = `${user.name} <span class="tag">${user.email}</span>`;
+          ul.appendChild(li);
+        });
+      });
+
+    fetch('/admin/services', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        const ul = document.getElementById('servicesList');
+        data.forEach(service => {
+          const li = document.createElement('li');
+          li.innerHTML = `${service.title} <span class="tag">${service.category}</span>`;
+          ul.appendChild(li);
+        });
+      });
+
+      app.post('/login', async (req, res) => {
+  const { email, password, role } = req.body;
+
+  try {
+    // Query to get user details based on email and role (whether it's hustler or customer)
+    let query = 'SELECT * FROM users WHERE email = ?';
+    const [rows] = await db.promise().execute(query, [email]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    const user = rows[0];
+
+    // Check if the provided password matches the stored password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
+
+    // If the email belongs to the admin, force the role to "admin" and handle redirection
+    const isAdminEmail = email === 'admin@example.com'; // Replace with the actual admin email
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user.id, role: isAdminEmail ? 'admin' : user.role }, 'your_secret_key', { expiresIn: '1h' });
+
+    res.status(200).json({
+      message: 'Login successful',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role, // This will be hustler or customer unless it's the admin email
+        skill: user.skill || null
+      },
+      authToken: token,
+      isAdminEmail // Send this flag to the client to know if this is the admin login
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error during login' });
+  }
+});
+
+  </script>
+
+</body>
+</html>
+
+
