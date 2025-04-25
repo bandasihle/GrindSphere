@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Dashboard | GrindSphere</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="forms.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <header>
+      <h1>Welcome, <span id="customerName">Customer</span> 👋</h1>
+      <button id="logoutBtn">Logout</button>
+    </header>
+
+    <nav class="dashboard-nav">
+      <ul>
+        <li><a href="#">🧑‍💼 Profile</a></li>
+        <li><a href="#">🛒 Orders</a></li>
+        <li><a href="#">📋 Subscriptions</a></li>
+        <li><a href="#">💬 Support</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <h2>Dashboard Overview</h2>
+      <p>Here’s what’s happening with your GrindSphere account.</p>
+      <!-- You can dynamically add more content here -->
+    </main>
+  </div>
+
+  <script>
+    
+  document.getElementById('customerSignupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      const response = await fetch('http://localhost:3000/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, role: 'customer' })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Save user data to localStorage and redirect
+        localStorage.setItem('grindsphereUser', JSON.stringify(data.user));
+        window.location.href = 'customer-dashboard.html';
+      } else {
+        alert(data.message || 'Signup failed.');
+      }
+
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  });
+</script>
+
+  
+</body>
+</html>
