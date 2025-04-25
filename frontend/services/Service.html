@@ -36,80 +36,120 @@
             </div>
     </header>
 
-    <body>
-        <div class="page-wrapper">
+    <h1>Find Services</h1>
 
-            <section class="services-section">
-                <h1>Our Services</h1>
-                <div class="services-container">
-                    <div class="service-card">
-                        <h2>Web Design</h2>
-                        <p>We create clean and responsive websites tailored to your needs.</p>
-                        <p class="provider">Provided by: Jane Doe</p>
-                    </div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search by service..." />
+  </div>
 
-                    <div class="service-card">
-                        <h4>Barber</h4>
-                        <p> We provide the best and most affordable haircuts suitable for your budget. </p>
-                        <P class="provider"> Provided by : Sihle Banda.</P>
-                    </div>
-                    <div class="service-card">
-                        <h5>Nail-tech</h5>
-                        <p> Ladies and gentlewoman irregadless of one gender, we provide the best nail services <br>
-                            come and see for yourself</p>
-                        <p class="provider"> Provided by: Lesego Mahlakoane.</p>
-                    </div>
-                    <div class="service-card">
-                        <h7>Photo<br>grapher</h7>
-                        <p> Cameras are not our thing but once we put our hands on them they listen and do as
-                            instructed</p>
-                        <P class="provider"> Provided by : Faith Nkoka.</P>
-                        <P class="provider"> Provided by : Amelia nkinika.</P>
-                    </div>
-                    <div class=" service-card">
-                        <h6> Tutors </h6>
-                        <p> For the best tutoring services, you can come to us for we only specialise in
-                            what is in your best interest.</p>
-                        <P class="provider"> Provided by : Rendani Ramaphosa </P>
-                        <P class="provider"> Provided by : Sihle Banda </P>
-                        <P class="provider"> Provided by : Armstrong Makome </P>
-                    </div>
+  <div class="grid" id="serviceGrid"></div>
 
-                    <div class="service-card">
-                        <h5>Bakers</h5>
-                        <p> Allow us to cure your cravings with our freshely baked cakes.</p>
-                        <p class="provider"> Provided by: Amelia nkwinika.</p>
-                    </div>
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <img id="modalImg" src="" alt="Profile" />
+      <h2 id="modalName"></h2>
+      <p id="modalDesc"></p>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
 
-                </div>
-        </div>
-        <!-- Add more service cards as needed -->
-        </div>
-        </section>
+  <script>
+    
+      const services = [
+  {
+    name: "FLICKSbyTHABI",
+    service: "Photography",
+    image: "images/photos.jpg",
+    description: "Capture memories with professional photography."
+  },
+  {
+    name: "Nails by Sandi",
+    service: "Nailtech",
+    image: "images/nailtech.jpg",
+    description: "Professional nail services with a touch of style!"
+  },
+  {
+    name: "CakeZee",
+    service: "Baker",
+    image: "images/cakezee.jpg",
+    description: "Delicious custom cakes for all occasions!"
+  },
+  {
+    name: "SamCUTZ",
+    service: "Barber",
+    image: "images/barber.jpg",
+    description: "Fresh trims and styles right on campus."
+  },
+  {
+    name: "GlowGoddess MUA",
+    service: "Makeup",
+    image: "images/makeup.jpg",
+    description: "Flawless makeup for weddings, photoshoots, and more!"
+  },
+  {
+    name: "Tutors United",
+    service: "Tutoring",
+    image: "images/tutor.jpg",
+    description: "Academic support in math, science, and more!"
+  },
+  {
+    name: "Campus Cutz",
+    service: "Haircut",
+    image: "images/haircut.jpg",
+    description: "Fresh trims and styles right on campus."
+  },
+  {
+    name: "Designs by Lwazi",
+    service: "Graphic Design",
+    image: "images/graphicdesign.jpg",
+    description: "Logos, flyers, and visuals that stand out."
+  }
 
-        </div>
+    ];
 
-        </nav>
+    const grid = document.getElementById('serviceGrid');
+    const input = document.getElementById('searchInput');
+
+    function displayServices(filtered) {
+      grid.innerHTML = '';
+      filtered.forEach(service => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${service.image}" alt="${service.name}">
+          <div class="card-info">
+            <h3>${service.name}</h3>
+            <p>${service.service}</p>
+            <span>Click for more info</span>
+          </div>
+        `;
+        card.onclick = () => showModal(service);
+        grid.appendChild(card);
+      });
+    }
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const query = input.value.toLowerCase();
+        const filtered = services.filter(s => s.service.toLowerCase().includes(query));
+        displayServices(filtered);
+      }
+    });
+
+    function showModal(service) {
+      document.getElementById('modalImg').src = service.image;
+      document.getElementById('modalName').innerText = `${service.name} - ${service.service}`;
+      document.getElementById('modalDesc').innerText = service.description;
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
 
 
-        <script>
-            const toggleBtn = document.getElementById('menu-toggle');
-            const navContainer = document.getElementById('nav-container');
-
-            toggleBtn.addEventListener('click', () => {
-                navContainer.classList.toggle('show');
-            });
-        </script>
-        <style>
-            h1 {
-                width: 200px;
-                font-size: 80%;
-                font-style: oblique;
-                color: rgb(67, 179, 183);
-            }
-        </style>
-
-
-    </body>
-
+    // Display all on load
+    displayServices(services);
+  </script>
+</body>
 </html>
