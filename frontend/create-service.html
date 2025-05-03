@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Service</title>
+  <link rel="stylesheet" href="/frontend/css/style.css"/>
+  <style>
+    .dashboard {
+      max-width: 600px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Form Heading */
+    .dashboard h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: #333;
+    }
+    
+    /* Form layout */
+    .dashboard form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    
+    /* Input and Textarea Fields */
+    .dashboard input[type="text"],
+    .dashboard input[type="number"],
+    .dashboard textarea {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    
+    .dashboard input:focus,
+    .dashboard textarea:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    
+    /* Buttons */
+    .dashboard button {
+      padding: 0.8rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .dashboard button:hover {
+      background-color: #0056b3;
+    }
+    
+    /* Delete Button Style */
+    #deleteBtn {
+      background-color: #dc3545;
+      margin-top: -0.5rem;
+    }
+    
+    #deleteBtn:hover {
+      background-color: #b02a37;
+    }
+    
+    /* Message Paragraph */
+    #message {
+      text-align: center;
+      font-weight: 500;
+      color: green;
+    }
+    /* Container for create service form */
+.create-service-form {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Form Title */
+.create-service-form h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+/* Form Layout */
+.create-service-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Labels for inputs */
+.create-service-form label {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+/* Input and Textarea Fields */
+.create-service-form input[type="text"],
+.create-service-form input[type="number"],
+.create-service-form textarea,
+.create-service-form input[type="file"] {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.create-service-form input:focus,
+.create-service-form textarea:focus,
+.create-service-form input[type="file"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Buttons */
+.create-service-form button {
+  padding: 0.8rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.create-service-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Message Paragraph */
+#message {
+  text-align: center;
+  font-weight: 500;
+  color: green;
+}
+
+/* Image Preview (optional) */
+#imagePreview {
+  max-width: 100%;
+  max-height: 200px;
+  margin-top: 1rem;
+  display: block;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+    </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h2>Create New Service</h2>
+    <form id="createServiceForm">
+      <input type="text" name="title" placeholder="Service Title" required />
+      <textarea name="description" placeholder="Description" required></textarea>
+      <input type="number" name="price" placeholder="Price (e.g. 99.99)" required />
+      <input type="text" name="category" placeholder="Category" required />
+      <input type="text" name="location" placeholder="Location" required />
+      <input type="hidden" name="hustler_id" value="<!-- insert logged-in hustler's ID -->" />
+      <button type="submit">Create Service</button>
+      <form id="createServiceForm" enctype="multipart/form-data">
+        <label for="image">Service Image:</label>
+        <input type="file" name="image" id="image" accept="image/*" required />
+       
+
+
+        
+  </div>
+
+  <script>
+    const form = document.getElementById('createServiceForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = Object.fromEntries(new FormData(form));
+
+      const res = await fetch('http://localhost:3000/services', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      document.getElementById('message').textContent = result.message || 'Error';
+    });
+  </script>
+</body>
+</html>

@@ -125,3 +125,162 @@ app.delete('/api/services/:id', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+app.post('/bookings', (req, res) => {
+  const { customer_id, service_id } = req.body;
+
+  const sql = 'INSERT INTO bookings (customer_id, service_id) VALUES (?, ?)';
+  db.query(sql, [customer_id, service_id], (err, result) => {
+    if (err) {
+      console.error('Error creating booking:', err);
+      return res.status(500).json({ error: 'Failed to create booking' });
+    }
+    res.status(201).json({ message: 'Booking successful', bookingId: result.insertId });
+  });
+});
+
+app.get('/bookings', (req, res) => {
+  const customerId = req.query.customerId;
+
+  const sql = `
+    SELECT b.id AS bookingId, s.title, s.category, s.price, s.description, b.booking_time, b.status
+    FROM bookings b
+    JOIN services s ON b.service_id = s.id
+    WHERE b.customer_id = ?
+    ORDER BY b.booking_time DESC
+  `;
+
+  db.query(sql, [customerId], (err, results) => {
+    if (err) {
+      console.error('Error fetching bookings:', err);
+      return res.status(500).json({ error: 'Failed to get bookings' });
+    }
+    res.json(results);
+  });
+});
+
+
+app.delete('/bookings/:id', (req, res) => {
+  const bookingId = req.params.id;
+
+  const sql = 'DELETE FROM bookings WHERE id = ?';
+  db.query(sql, [bookingId], (err, result) => {
+    if (err) {
+      console.error('Error cancelling booking:', err);
+      return res.status(500).json({ error: 'Failed to cancel booking' });
+    }
+    res.json({ message: 'Booking cancelled successfully' });
+  });
+});
+
+app.get('/services', (req, res) => {
+  const { category, location, hustlerId } = req.query;
+
+  let sql = 'SELECT s.*, u.name AS hustler_name FROM services s JOIN users u ON s.hustler_id = u.id WHERE 1';
+  const values = [];
+
+  if (category) {
+    sql += ' AND s.category = ?';
+    values.push(category);
+  }
+
+  if (location) {
+    sql += ' AND s.location = ?';
+    values.push(location);
+  }
+
+  if (hustlerId) {
+    sql += ' AND s.hustler_id = ?';
+    values.push(hustlerId);
+  }
+
+  db.query(sql, values, (err, results) => {
+    if (err) {
+      console.error('Error fetching services:', err);
+      return res.status(500).json({ error: 'Failed to get services' });
+    }
+    res.json(results);
+  });
+});
+
+
+app.post('/services', (req, res) => {
+  const { hustler_id, title, description, price, category, location, image_url } = req.body;
+
+  const sql = `
+    INSERT INTO services (hustler_id, title, description, price, category, location)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+  db.query(sql, [hustler_id, title, description, price, category, location, image_url], (err, result) => {
+    if (err) {
+      console.error('Error creating service:', err);
+      return res.status(500).json({ error: 'Failed to create service' });
+    }
+    res.status(201).json({ message: 'Service created', serviceId: result.insertId });
+  });
+});
+
+app.put('/services/:id', (req, res) => {
+  const serviceId = req.params.id;
+  const { title, description, price, category, location, image_url } = req.body;
+
+  const sql = `
+    UPDATE services SET title = ?, description = ?, price = ?, category = ?, location = ?
+    WHERE id = ?
+  `;
+  db.query(sql, [title, description, price, category, location, serviceId, image_url], (err, result) => {
+    if (err) {
+      console.error('Error updating service:', err);
+      return res.status(500).json({ error: 'Failed to update service' });
+    }
+    res.json({ message: 'Service updated successfully' });
+  });
+});
+
+app.delete('/services/:id', (req, res) => {
+  const serviceId = req.params.id;
+
+  const sql = 'DELETE FROM services WHERE id = ?';
+  db.query(sql, [serviceId], (err, result) => {
+    if (err) {
+      console.error('Error deleting service:', err);
+      return res.status(500).json({ error: 'Failed to delete service' });
+    }
+    res.json({ message: 'Service deleted successfully' });
+  });
+});
+
+const multer = require('multer');
+const path = require('path');
+
+// Set up storage location and filename
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // make sure this folder exists
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext); // unique filename
+  }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/services', upload.single('image'), async (req, res) => {
+  const { hustler_id, title, description, price, category, location } = req.body;
+  const image_url = req.file ? req.file.filename : null;
+
+  const sql = `INSERT INTO services (hustler_id, title, description, price, category, location, image_url)
+               VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+  db.query(sql, [hustler_id, title, description, price, category, location, image_url], (err, result) => {
+    if (err) return res.status(500).json({ message: 'Error saving service.' });
+    res.json({ message: 'Service created successfully.' });
+  });
+});
+
+app.use('/uploads', express.static('uploads'));
+
+
+
+

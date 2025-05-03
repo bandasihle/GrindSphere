@@ -1,42 +1,202 @@
-<!-- hustler-dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hustler Dashboard</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hustler Dashboard | GrindSphere</title>
+  <link rel="stylesheet" href="/frontend/css/style.css"/>
   <style>
-    body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f9fafb; }
-    header { background: #4f46e5; color: white; padding: 1rem; text-align: center; }
-    .container { padding: 2rem; }
-    .card { background: white; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 0 8px rgba(0,0,0,0.05); }
-    .card h3 { margin-top: 0; }
-    .actions button { margin-right: 0.5rem; padding: 0.5rem 1rem; border: none; border-radius: 5px; cursor: pointer; }
-    .edit { background: #10b981; color: white; }
-    .delete { background: #ef4444; color: white; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f7f7;
+    }
+    header {
+      background-color: #ac2a9f;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .welcome {
+      font-size: 1.5rem;
+    }
+    .logout {
+      background-color: #fff;
+      color: #198754;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .top-actions button {
+      background-color: #f3f3f3;
+      color: rgb(207, 93, 93);
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-card {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .service-card h3 {
+      margin: 0.5rem 0;
+    }
+    .service-card p {
+      font-size: 0.9rem;
+      color: #333;
+    }
+    .btn-group {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-edit, .btn-delete {
+      flex: 1;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-edit {
+      background-color: #ffc107;
+      color: #000;
+    }
+    .btn-delete {
+      background-color: #dc3545;
+      color: #fff;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 2rem;
+    }
   </style>
 </head>
 <body>
+
+  <!-- HEADER -->
   <header>
-    <h1>Hustler Dashboard</h1>
+    <div class="welcome">Welcome, <span id="hustlerName">Hustler Name</span> 💼</div>
+    <button class="logout" onclick="logout()">Logout</button>
   </header>
+
+  <!-- MAIN CONTENT -->
   <div class="container">
-    <div class="card">
-      <h3>Photography Services</h3>
-      <p>Offering event and profile photo shoots.</p>
-      <div class="actions">
-        <button class="edit">Edit</button>
-        <button class="delete">Delete</button>
-      </div>
+
+    <!-- CREATE SERVICE BUTTON -->
+    <div class="top-actions">
+      <h2>Your Services</h2>
+      <button onclick="location.href='/frontend/create-service.html'">+ Create New Service</button>
     </div>
-    <div class="card">
-      <h3>Math Tutoring</h3>
-      <p>Helping high school students with algebra and calculus.</p>
-      <div class="actions">
-        <button class="edit">Edit</button>
-        <button class="delete">Delete</button>
-      </div>
+
+    <!-- HUSTLER SERVICES -->
+    <div class="service-grid" id="hustlerServices">
+      <!-- Dynamically injected services -->
     </div>
+
   </div>
+
+  <!-- FOOTER -->
+  <footer>
+    &copy; 2025 GrindSphere. Hustle Hard. Hustle Smart.
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("hustlerName").textContent = localStorage.getItem("hustlerName") || "Your Name";
+      fetchHustlerServices();
+    });
+
+    function fetchHustlerServices() {
+      const hustlerId = localStorage.getItem("hustlerId");
+
+      fetch(`http://localhost:3000/services?hustlerId=${hustlerId}`)
+        .then(res => res.json())
+        .then(data => renderServices(data))
+        .catch(err => {
+          console.error("Error loading services:", err);
+        });
+    }
+
+    function renderServices(services) {
+      const container = document.getElementById("hustlerServices");
+      container.innerHTML = "";
+
+      if (services.length === 0) {
+        container.innerHTML = "<p>You haven’t listed any services yet.</p>";
+        return;
+      }
+
+      services.forEach(service => {
+        const card = document.createElement("div");
+        card.className = "service-card";
+
+        card.innerHTML = `
+          <h3>${service.title}</h3>
+          <p><strong>Category:</strong> ${service.category}</p>
+          <p><strong>Price:</strong> R${service.price}</p>
+          <p>${service.description}</p>
+          <div class="btn-group">
+            <button class="btn-edit" onclick="editService(${service.id})">Edit</button>
+            <button class="btn-delete" onclick="deleteService(${service.id})">Delete</button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function editService(serviceId) {
+      window.location.href = `edit-service.html?id=${serviceId}`;
+    }
+
+    function deleteService(serviceId) {
+      if (!confirm("Are you sure you want to delete this service?")) return;
+
+      fetch(`http://localhost:3000/services/${serviceId}`, {
+        method: 'DELETE'
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert("Service deleted.");
+        fetchHustlerServices();
+      })
+      .catch(err => {
+        console.error("Delete failed:", err);
+        alert("Failed to delete service.");
+      });
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "/frontend/authentication/login.html";
+    }
+  </script>
+
 </body>
 </html>
+
