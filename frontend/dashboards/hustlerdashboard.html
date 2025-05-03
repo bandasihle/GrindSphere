@@ -1,42 +1,661 @@
-<!-- hustler-dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hustler Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f9fafb; }
-    header { background: #4f46e5; color: white; padding: 1rem; text-align: center; }
-    .container { padding: 2rem; }
-    .card { background: white; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 0 8px rgba(0,0,0,0.05); }
-    .card h3 { margin-top: 0; }
-    .actions button { margin-right: 0.5rem; padding: 0.5rem 1rem; border: none; border-radius: 5px; cursor: pointer; }
-    .edit { background: #10b981; color: white; }
-    .delete { background: #ef4444; color: white; }
+    :root {
+      --primary: #7e22ce;
+      --primary-light: #a855f7;
+      --primary-dark: #36123F;
+      --secondary: #6b7270;
+      --danger: #131111;
+      --light: #f9fafb;
+      --dark: #1f2937;
+      --gray: #6b7280;
+      --background: linear-gradient(135deg, #050305, #36123F, #624343, #8F37B1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--background);
+      color: rgb(224, 227, 229);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Dashboard Layout */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 250px;
+      min-height: 100vh;
+      padding-top: 80px;
+      width: 100%;
+    }
+
+    /* Header */
+    header {
+      background-color: var(--primary-dark);
+      padding: 10px 0;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      height: 80px;
+    }
+
+
+
+    /* Sidebar */
+    .sidebar {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      height: calc(100vh - 80px);
+      width: 250px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-menu {
+      list-style: none;
+      margin-top: 2rem;
+    }
+
+    .nav-item {
+      margin-bottom: 1rem;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background-color: rgba(143, 55, 177, 0.3);
+      color: white;
+    }
+
+    .nav-link i {
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 2rem;
+      margin-left: 250px;
+      width: calc(100% - 250px);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      color: white;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-left-width: 40px;
+      padding-left: 100px;
+
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary-light);
+    }
+
+    /* Cards and Panels */
+    .panel {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: max-content;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      width: max-content;
+    }
+
+    .panel-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: white;
+      width: max-content;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #d71212;
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #42be80;
+    }
+
+    /* Profile Section */
+    .profile-header {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: fit-content;
+    }
+
+    .profile-avatar {
+      width: fit-content;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--primary-light);
+    }
+
+    .profile-info h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      width: fit-content;
+      color: white;
+    }
+
+    .profile-info p {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-tag {
+      display: inline-block;
+      background: rgba(143, 55, 177, 0.3);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Service Cards */
+    .service-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s;
+      width: fit-content;
+    }
+
+    .service-card:hover {
+      border-color: var(--primary-light);
+      background: rgba(143, 55, 177, 0.2);
+      box-shadow: 0 2px 8px rgba(126, 34, 206, 0.1);
+      width: max-content;
+    }
+
+    .service-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+
+    .service-price {
+      font-weight: 600;
+      color: var(--primary-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .service-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      justify-content: flex-end;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: white;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      font-family: inherit;
+      color: white;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Requests Section */
+    .request-card {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .request-card:last-child {
+      border-bottom: none;
+    }
+
+    .request-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary-light);
+    }
+
+    .request-info h4 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+      color: white;
+    }
+
+    .request-info p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.875rem;
+    }
+
+    .request-status {
+      margin-left: auto;
+      font-size: 0.875rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+    }
+
+    .status-pending {
+      background: rgba(254, 243, 199, 0.2);
+      color: #fbbf24;
+    }
+
+    .status-confirmed {
+      background: rgba(220, 252, 231, 0.2);
+      color: #34d399;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+        padding-top: 60px;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: static;
+        height: auto;
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .service-actions {
+        justify-content: center;
+      }
+    }
+
+    /* Additional Elements from Second Stylesheet */
+    .bubble {
+      padding: 15px 25px;
+      background-color: var(--primary);
+      border-radius: 30px;
+      font-size: 18px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+
+    .bubble:hover {
+      background-color: var(--primary-dark);
+      transform: scale(1.05);
+    }
+
+    .search-bar {
+      width: 80%;
+      padding: 15px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 2px solid var(--primary);
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      margin: 20px 0;
+    }
+
+    .search-bar::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btns {
+      padding: 30px;
+      background-color: var(--primary);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+
+    }
+
+    .btns:hover {
+      background-color: var(--primary-dark);
+      transform: scale(1.05);
+    }
   </style>
 </head>
+
 <body>
-  <header>
-    <h1>Hustler Dashboard</h1>
-  </header>
-  <div class="container">
-    <div class="card">
-      <h3>Photography Services</h3>
-      <p>Offering event and profile photo shoots.</p>
-      <div class="actions">
-        <button class="edit">Edit</button>
-        <button class="delete">Delete</button>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <i class="fas fa-bolt"></i>
+        <span>HustleHub</span>
       </div>
-    </div>
-    <div class="card">
-      <h3>Math Tutoring</h3>
-      <p>Helping high school students with algebra and calculus.</p>
-      <div class="actions">
-        <button class="edit">Edit</button>
-        <button class="delete">Delete</button>
+
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#" class="nav-link active">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="fas fa-briefcase"></i>
+            <span>Services</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="fas fa-envelope"></i>
+            <span>Requests</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
+      <div style="margin-top: auto; padding-top: 2rem;">
+        <a href="#" class="nav-link">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
       </div>
-    </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="header">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="user-menu">
+          <p1><span>John Doe</span></p1>
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="user-avatar">
+        </div>
+      </div>
+
+      <!-- Profile Header -->
+      <section class="profile-header">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-avatar">
+        <div class="profile-info">
+          <h2>John Doe</h2>
+          <p>john.doe@example.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> New York, USA</p>
+          <span class="skill-tag">Photographer & Math Tutor</span>
+        </div>
+      </section>
+
+      <!-- Services Panel -->
+      <section class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">My Services</h3>
+          <button class="btn btn-primary" id="addServiceBtn">
+            <i class="fas fa-plus"></i>
+            Add Service
+          </button>
+        </div>
+
+        <div class="service-list">
+          <div class="service-card">
+            <h4 class="service-title">Professional Photography</h4>
+            <div class="service-price">R150/hour</div>
+            <p>High-quality event and portrait photography with professional lighting and editing included.</p>
+            <div class="service-actions">
+              <button class="btn btn-secondary">
+                <i class="fas fa-edit"></i>
+                Edit
+              </button>
+              <button class="btn btn-danger">
+                <i class="fas fa-trash"></i>
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <h4 class="service-title">Math Tutoring</h4>
+            <div class="service-price">R100/hour</div>
+            <p>Personalized high school math tutoring with 5 years experience. Specializing in algebra and calculus.
+            </p>
+            <div class="service-actions">
+              <button class="btn btn-secondary">
+                <i class="fas fa-edit"></i>
+                Edit
+              </button>
+              <button class="btn btn-danger">
+                <i class="fas fa-trash"></i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Add Service Form (Hidden by default) -->
+      <section class="panel" id="addServiceForm" style="display: none;">
+        <div class="panel-header">
+          <h3 class="panel-title">Add New Service</h3>
+        </div>
+
+        <form>
+          <div class="form-group">
+            <label for="serviceName" class="form-label">Service Name</label>
+            <input type="text" id="serviceName" class="form-control" placeholder="e.g., Web Development">
+          </div>
+
+          <div class="form-group">
+            <label for="servicePrice" class="form-label">Price</label>
+            <input type="text" id="servicePrice" class="form-control" placeholder="e.g., $50/hour">
+          </div>
+
+          <div class="form-group">
+            <label for="serviceDescription" class="form-label">Description</label>
+            <textarea id="serviceDescription" class="form-control" rows="4"
+              placeholder="Describe your service in detail"></textarea>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+            <button type="button" class="btn btn-danger" id="cancelAddService">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i>
+              Save Service
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Requests Panel -->
+      <section class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">Recent Requests</h3>
+        </div>
+
+        <div class="request-list">
+          <div class="request-card">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="request-avatar">
+            <div class="request-info">
+              <h4>Sarah Johnson</h4>
+              <p>Requested: Photography Service</p>
+              <p><small>2 days ago</small></p>
+            </div>
+            <span class="request-status status-pending">Pending</span>
+          </div>
+
+          <div class="request-card">
+            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Client" class="request-avatar">
+            <div class="request-info">
+              <h4>Michael Brown</h4>
+              <p>Booked: Math Tutoring</p>
+              <p><small>1 week ago</small></p>
+            </div>
+            <span class="request-status status-confirmed">Confirmed</span>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
+
+  <script>
+    // Toggle Add Service Form
+    document.getElementById('addServiceBtn').addEventListener('click', function () {
+      document.getElementById('addServiceForm').style.display = 'block';
+      this.style.display = 'none';
+    });
+
+    document.getElementById('cancelAddService').addEventListener('click', function () {
+      document.getElementById('addServiceForm').style.display = 'none';
+      document.getElementById('addServiceBtn').style.display = 'inline-flex';
+    });
+
+    // Simple form submission handler
+    document.querySelector('#addServiceForm form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('Service added successfully!');
+      this.reset();
+      document.getElementById('addServiceForm').style.display = 'none';
+      document.getElementById('addServiceBtn').style.display = 'inline-flex';
+    });
+  </script>
 </body>
+
 </html>
