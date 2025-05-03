@@ -173,6 +173,7 @@ app.delete('/bookings/:id', (req, res) => {
   });
 });
 
+// GET services with optional filters
 app.get('/services', (req, res) => {
   const { category, location, hustlerId } = req.query;
 
@@ -203,14 +204,15 @@ app.get('/services', (req, res) => {
   });
 });
 
-
+// POST create a new service
 app.post('/services', (req, res) => {
   const { hustler_id, title, description, price, category, location, image_url } = req.body;
 
   const sql = `
-    INSERT INTO services (hustler_id, title, description, price, category, location)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO services (hustler_id, title, description, price, category, location, image_url)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
+
   db.query(sql, [hustler_id, title, description, price, category, location, image_url], (err, result) => {
     if (err) {
       console.error('Error creating service:', err);
@@ -220,15 +222,18 @@ app.post('/services', (req, res) => {
   });
 });
 
+// PUT update a service
 app.put('/services/:id', (req, res) => {
   const serviceId = req.params.id;
   const { title, description, price, category, location, image_url } = req.body;
 
   const sql = `
-    UPDATE services SET title = ?, description = ?, price = ?, category = ?, location = ?
+    UPDATE services 
+    SET title = ?, description = ?, price = ?, category = ?, location = ?, image_url = ?
     WHERE id = ?
   `;
-  db.query(sql, [title, description, price, category, location, serviceId, image_url], (err, result) => {
+
+  db.query(sql, [title, description, price, category, location, image_url, serviceId], (err, result) => {
     if (err) {
       console.error('Error updating service:', err);
       return res.status(500).json({ error: 'Failed to update service' });
@@ -237,6 +242,7 @@ app.put('/services/:id', (req, res) => {
   });
 });
 
+// DELETE a service
 app.delete('/services/:id', (req, res) => {
   const serviceId = req.params.id;
 
@@ -249,38 +255,6 @@ app.delete('/services/:id', (req, res) => {
     res.json({ message: 'Service deleted successfully' });
   });
 });
-
-const multer = require('multer');
-const path = require('path');
-
-// Set up storage location and filename
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // make sure this folder exists
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    cb(null, Date.now() + ext); // unique filename
-  }
-});
-
-const upload = multer({ storage: storage });
-
-app.post('/services', upload.single('image'), async (req, res) => {
-  const { hustler_id, title, description, price, category, location } = req.body;
-  const image_url = req.file ? req.file.filename : null;
-
-  const sql = `INSERT INTO services (hustler_id, title, description, price, category, location, image_url)
-               VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
-  db.query(sql, [hustler_id, title, description, price, category, location, image_url], (err, result) => {
-    if (err) return res.status(500).json({ message: 'Error saving service.' });
-    res.json({ message: 'Service created successfully.' });
-  });
-});
-
-app.use('/uploads', express.static('uploads'));
-
 
 
 
