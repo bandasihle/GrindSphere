@@ -213,7 +213,7 @@ main {
 h2 {
     font-size: 32px;
     margin-bottom: 20px;
-    color: #8F37B1;
+    color: #27c6d5;
 }
 
 /* Hustler Cards Section */
@@ -244,11 +244,13 @@ h2 {
 .hustler-card h3 {
     font-size: 22px;
     margin-top: 10px;
+
 }
 
 .hustler-card p {
     font-size: 16px;
     margin-top: 5px;
+
 }
 
 /* Hover effect for cards */
@@ -290,9 +292,6 @@ h2 {
     text-align: center;
 }
 
-
-
-
 .auth-btns {
     display: flex;
     justify-content: center;
@@ -333,12 +332,6 @@ h2 {
     }
 }
 
-
-
-
-
-
-
 .about {
     max-width: 900px;
     padding: 40px;
@@ -363,7 +356,7 @@ h2 {
     font-size: 18px;
     line-height: 1.6;
     margin-bottom: 20px;
-    color: #fff;
+    color: #ffffff;
 
 }
 
@@ -564,8 +557,6 @@ footer {
     }
 }
 
-
-
 /* Contact Section */
 .contact {
     text-align: center;
@@ -716,7 +707,7 @@ footer {
 
 .service-card p {
     font-size: 16px;
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 /* Services Preview */
