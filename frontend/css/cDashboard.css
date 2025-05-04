@@ -17,7 +17,7 @@ body {
 }
 
 
->.dashboard {
+.dashboard {
     display: flex;
     height: 100vh;
 }

@@ -1,37 +1,213 @@
-<!-- customer-dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customer Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Dashboard | GrindSphere</title>
+  <link rel="stylesheet" href="/frontend/css/style.css"/>
   <style>
-    body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f9fafb; }
-    header { background: #4f46e5; color: white; padding: 1rem; text-align: center; }
-    .container { padding: 2rem; }
-    .search-box { margin-bottom: 2rem; }
-    .search-box input { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 5px; }
-    .result-card { background: white; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 0 8px rgba(0,0,0,0.05); }
-    .result-card h3 { margin-top: 0; }
-    
+    /* Minimal styling if styles.css isn't set yet */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #b93c9e;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .welcome {
+      font-size: 1.5rem;
+    }
+    .logout {
+      background-color: #fff;
+      color: #0d6efd;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .search-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .search-bar input,
+    .search-bar select {
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      flex: 1;
+    }
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-card {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .service-card h3 {
+      margin: 0.5rem 0;
+    }
+    .service-card p {
+      font-size: 0.9rem;
+      color: #333;
+    }
+    .book-btn {
+      margin-top: 1rem;
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 2rem;
+    }
   </style>
 </head>
 <body>
+
+  <!-- HEADER -->
   <header>
-    <h1>Customer Dashboard</h1>
+    <div class="welcome">Welcome, <span id="customerName">Customer Name</span> 👋</div>
+    <button class="logout" onclick="logout()">Logout</button>
   </header>
+
+  <!-- MAIN CONTENT -->
   <div class="container">
-    <div class="search-box">
-      <input type="text" placeholder="Search services..." />
+
+    <!-- SEARCH AND FILTER -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for services...">
+      <select id="categoryFilter">
+        <option value="">All Categories</option>
+        <option value="Tutoring">Tutoring</option>
+        <option value="Cleaning">Cleaning</option>
+        <option value="Design">Design</option>
+        <option value="IT Support">IT Support</option>
+        <!-- Add more based on your DB -->
+      </select>
     </div>
-    <div class="result-card">
-      <h3>Haircut Services</h3>
-      <p>Clean fades and styling available every weekend.</p>
+
+    <!-- SERVICE LISTINGS -->
+    <div class="service-grid" id="serviceList">
+      <!-- Services will be dynamically injected here via JavaScript -->
     </div>
-    <div class="result-card">
-      <h3>Graphic Design</h3>
-      <p>Logos, posters, and social media designs offered.</p>
-    </div>
+
   </div>
+
+  <!-- FOOTER -->
+  <footer>
+    &copy; 2025 GrindSphere. Empowering Students through Hustles.
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Replace with API call to get customer name
+      document.getElementById("customerName").textContent = localStorage.getItem("customerName") || "John Doe";
+
+      fetchServices();
+
+      // Attach filters
+      document.getElementById("searchInput").addEventListener("input", fetchServices);
+      document.getElementById("categoryFilter").addEventListener("change", fetchServices);
+    });
+
+    function fetchServices() {
+      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+      const category = document.getElementById("categoryFilter").value;
+
+      // Fetch from backend
+      fetch('http://localhost:3000/services') // Adjust port/path as needed
+        .then(res => res.json())
+        .then(data => {
+          const filtered = data.filter(service => {
+            const matchesCategory = category === "" || service.category === category;
+            const matchesSearch = service.title.toLowerCase().includes(searchTerm) ||
+                                  service.description.toLowerCase().includes(searchTerm);
+            return matchesCategory && matchesSearch;
+          });
+
+          renderServices(filtered);
+        })
+        .catch(err => {
+          console.error("Failed to fetch services:", err);
+        });
+    }
+
+    function renderServices(services) {
+      const container = document.getElementById("serviceList");
+      container.innerHTML = ""; // Clear existing
+
+      if (services.length === 0) {
+        container.innerHTML = "<p>No services found.</p>";
+        return;
+      }
+
+      services.forEach(service => {
+        const card = document.createElement("div");
+        card.className = "service-card";
+
+        card.innerHTML = `
+          <h3>${service.title}</h3>
+          <p><strong>Category:</strong> ${service.category}</p>
+          <p><strong>Price:</strong> R${service.price}</p>
+          <p>${service.description}</p>
+          <button class="book-btn" onclick="bookService(${service.id})">Book Now</button>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function bookService(serviceId) {
+      const customerId = localStorage.getItem("customerId");
+      if (!customerId) {
+        alert("Please log in again.");
+        return;
+      }
+
+      fetch('http://localhost:3000/bookings', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ serviceId, customerId })
+      })
+      .then(res => res.json())
+      .then(response => {
+        alert("Booking confirmed!");
+      })
+      .catch(err => {
+        console.error("Booking failed:", err);
+        alert("Failed to book the service. Try again.");
+      });
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "/frontend/authentication/login.html";
+    }
+  </script>
+
 </body>
 </html>
