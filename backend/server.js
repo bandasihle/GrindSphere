@@ -255,6 +255,45 @@ app.delete('/services/:id', (req, res) => {
     res.json({ message: 'Service deleted successfully' });
   });
 });
+const multer = require('multer');
+const path = require('path');
+
+// Set up storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}-${Math.round(Math.random() * 1E9)}${ext}`);
+  }
+});
+
+const upload = multer({ storage });
+
+// Route to handle service creation with image
+app.post('/services', upload.single('image'), (req, res) => {
+  // ✅ req.body will now be defined, even for multipart/form-data
+  const { hustler_id, title, description, price, category, location } = req.body;
+  const image_url = req.file ? req.file.filename : null;
+
+  if (!hustler_id || !title || !description || !price || !category || !location || !image_url) {
+    return res.status(400).json({ error: 'All fields are required including image' });
+  }
+
+  const sql = `
+    INSERT INTO services (hustler_id, title, description, price, category, location, image_url)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(sql, [hustler_id, title, description, price, category, location, image_url], (err, result) => {
+    if (err) {
+      console.error('Error inserting service:', err);
+      return res.status(500).json({ error: 'Database error creating service' });
+    }
+    res.status(201).json({ message: 'Service created successfully', serviceId: result.insertId });
+  });
+});
 
 
 

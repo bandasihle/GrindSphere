@@ -172,39 +172,47 @@
 <body>
   <div class="dashboard">
     <h2>Create New Service</h2>
-    <form id="createServiceForm">
+    <form id="createServiceForm" enctype="multipart/form-data">
       <input type="text" name="title" placeholder="Service Title" required />
       <textarea name="description" placeholder="Description" required></textarea>
-      <input type="number" name="price" placeholder="Price (e.g. 99.99)" required />
+      <input type="number" name="price" placeholder="Price (e.g. 99.99)" step="0.01" required />
       <input type="text" name="category" placeholder="Category" required />
       <input type="text" name="location" placeholder="Location" required />
-      <input type="hidden" name="hustler_id" value="<!-- insert logged-in hustler's ID -->" />
+  
+      <!-- Hidden field for hustler_id -->
+      <input type="hidden" name="hustler_id" value="<%= hustler_id %>" />
+  
+      <!-- File input for image -->
+      <label for="image">Service Image:</label>
+      <input type="file" name="image" id="image" accept="image/*" required />
+  
       <button type="submit">Create Service</button>
-      <form id="createServiceForm" enctype="multipart/form-data">
-        <label for="image">Service Image:</label>
-        <input type="file" name="image" id="image" accept="image/*" required />
-       
-
-
-        
+    </form>
+    <p id="message"></p>
   </div>
-
+  
   <script>
     const form = document.getElementById('createServiceForm');
+  
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      const data = Object.fromEntries(new FormData(form));
-
-      const res = await fetch('http://localhost:3000/services', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      const result = await res.json();
-      document.getElementById('message').textContent = result.message || 'Error';
+  
+      const formData = new FormData(form);
+  
+      try {
+        const res = await fetch('http://localhost:3000/services', {
+          method: 'POST',
+          body: formData
+        });
+  
+        const result = await res.json();
+        document.getElementById('message').textContent = result.message || 'Something went wrong.';
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('message').textContent = 'Network error.';
+      }
     });
   </script>
+  
 </body>
 </html>
