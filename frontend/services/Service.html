@@ -2,154 +2,118 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GrindSphere</title>
-    <link rel="stylesheet" href="/frontend/css/style.css">
-    <link rel="stylesheet" href="/frontend/services/Service.html" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrindSphere</title>
+  <link rel="stylesheet" href="/GrindSphere/frontend/css/style.css">
+
 </head>
 
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <img src="images/logo4 copy.png" alt="HustleSphere Logo">
-            </div>
-            <div class="menu-toggle" id="menu-toggle">&#9776;</div>
-
-            <div class="nav-container" id="nav-container">
-                <ul class="nav-links">
-                    <li><a href="/frontend/index.html">Home</a></li>
-                    <li><a href="/frontend/about.html">About</a></li>
-                    <li><a href="/frontend/services/Service.html">Services</a></li>
-                    <li><a href="/frontend/contact.html">Contact</a></li>
-                    <li><a href="/frontend/team.html">Team</a></li>
-                </ul>
 
 
-            </div>
-            <div>
-                <ul class="auth-links">
-                    <li><a href="signup.html" id="signup-btn" class="btns">Sign Up</a></li>
-                    <li><a href="/frontend/authentication/login.html" id="login-btn" class="btns">Login</a></li>
-                </ul>
-            </div>
-    </header>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="/GrindSphere/frontend/images/Logolog1.jpeg" alt="HustleSphere Logo">
+      </div>
 
-    <h1>Find Services</h1>
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
 
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search by service..." />
-  </div>
+      <div class="nav-container" id="nav-container">
+        <ul class="nav-links">
+          <li><a href="/GrindSphere/frontend/index.html">Home</a></li>
+          <li><a href="/GrindSphere/frontend/about.html">About</a></li>
+          <li><a href="/GrindSphere/frontend/services/Service.html">Services</a></li>
+          <li><a href="/GrindSphere/frontend/contact.html">Contact</a></li>
+          <li><a href="/GrindSphere/frontend/team.html">Team</a></li>
 
-  <div class="grid" id="serviceGrid"></div>
 
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <img id="modalImg" src="" alt="Profile" />
-      <h2 id="modalName"></h2>
-      <p id="modalDesc"></p>
-      <button class="close-btn" onclick="closeModal()">Close</button>
-    </div>
-  </div>
+        </ul>
+
+        <ul class="auth-links">
+          <li><a href="authentication/signup.html" id="signup-btn" class="btns">Sign Up</a></li>
+          <li><a href="/frontend/authentication/login.html" id="login-btn" class="btns">Login</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+
+
+  <main>
+    <section class="welcome">
+      <h1>Welcome to Grind$phere</h1>
+      <p>Connect with fellow students offering services and showcase your own business.</p>
+
+    </section>
+
+    <section class="search-section">
+      <input type="text" placeholder="Search services..." id="search-bar" class="search-bar">
+    </section>
+
+    <!-- Category Bubbles Section -->
+    <section class="category-bubbles">
+      <div class="bubble">Nails</div>
+      <div class="bubble">Hair</div>
+      <div class="bubble">Tutoring</div>
+      <div class="bubble">Photography</div>
+      <div class="bubble">Barber</div>
+    </section>
+
+    <!-- Top Hustlers Section (Profiles in a Row) -->
+    <section class="top-hustlers">
+      <h2>Top Hustlers</h2>
+      <div class="hustler-cards">
+        <div class="hustler-card">
+          <img src="/GrindSphere/frontend/images/nailtech.jpg" alt="Nail Tech">
+          <h3>Nails by Sandi</h3>
+          <p>Professional nail services with a touch of style!</p>
+        </div>
+        <div class="hustler-card">
+          <img src="/GrindSphere/frontend/images/_photography.jpg" alt="Photography Service">
+          <h3>FLICKSbyTHABI</h3>
+          <p>Capture memories with professional photography.</p>
+        </div>
+        <div class="hustler-card">
+          <img src="/GrindSphere/frontend/images/Coding1.jpeg" alt="Coding Service" height="180px">
+          <h3>codeAMP</h3>
+          <p>Bringing your app ideas to life with quality code!</p>
+        </div>
+        <div class="hustler-card">
+          <img src="/GrindSphere/frontend/images/cakezee.jpg" alt="Baking Service">
+          <h3>CakesZee</h3>
+          <p>Delicious custom cakes for all occasions!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <!-- Your footer content -->
+  </footer>
+
+  </main>
+
+
+
+
+  <!-- Link to external JavaScript file -->
+  <script src="script.js"></script>
 
   <script>
-    
-      const services = [
-  {
-    name: "FLICKSbyTHABI",
-    service: "Photography",
-    image: "images/photos.jpg",
-    description: "Capture memories with professional photography."
-  },
-  {
-    name: "Nails by Sandi",
-    service: "Nailtech",
-    image: "images/nailtech.jpg",
-    description: "Professional nail services with a touch of style!"
-  },
-  {
-    name: "CakeZee",
-    service: "Baker",
-    image: "images/cakezee.jpg",
-    description: "Delicious custom cakes for all occasions!"
-  },
-  {
-    name: "SamCUTZ",
-    service: "Barber",
-    image: "images/barber.jpg",
-    description: "Fresh trims and styles right on campus."
-  },
-  {
-    name: "GlowGoddess MUA",
-    service: "Makeup",
-    image: "images/makeup.jpg",
-    description: "Flawless makeup for weddings, photoshoots, and more!"
-  },
-  {
-    name: "Tutors United",
-    service: "Tutoring",
-    image: "images/tutor.jpg",
-    description: "Academic support in math, science, and more!"
-  },
-  {
-    name: "Campus Cutz",
-    service: "Haircut",
-    image: "images/haircut.jpg",
-    description: "Fresh trims and styles right on campus."
-  },
-  {
-    name: "Designs by Lwazi",
-    service: "Graphic Design",
-    image: "images/graphicdesign.jpg",
-    description: "Logos, flyers, and visuals that stand out."
-  }
+    const toggleBtn = document.getElementById('menu-toggle');
+    const navContainer = document.getElementById('nav-container');
 
-    ];
-
-    const grid = document.getElementById('serviceGrid');
-    const input = document.getElementById('searchInput');
-
-    function displayServices(filtered) {
-      grid.innerHTML = '';
-      filtered.forEach(service => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <img src="${service.image}" alt="${service.name}">
-          <div class="card-info">
-            <h3>${service.name}</h3>
-            <p>${service.service}</p>
-            <span>Click for more info</span>
-          </div>
-        `;
-        card.onclick = () => showModal(service);
-        grid.appendChild(card);
-      });
-    }
-
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const query = input.value.toLowerCase();
-        const filtered = services.filter(s => s.service.toLowerCase().includes(query));
-        displayServices(filtered);
-      }
+    toggleBtn.addEventListener('click', () => {
+      navContainer.classList.toggle('show');
     });
-
-    function showModal(service) {
-      document.getElementById('modalImg').src = service.image;
-      document.getElementById('modalName').innerText = `${service.name} - ${service.service}`;
-      document.getElementById('modalDesc').innerText = service.description;
-      document.getElementById('modal').style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
-
-
-    // Display all on load
-    displayServices(services);
   </script>
+
+
+  <footer>
+    <p>&copy; 2025 GrindSphere | All rights reserved</p>
+  </footer>
 </body>
+
 </html>

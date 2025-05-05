@@ -9,8 +9,9 @@ body {
   min-height: 100vh;
 }
 
-.signup, .form-container {
-  background-color:#36123F;
+.signup,
+.form-container {
+  background-color: #36123F;
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -18,7 +19,8 @@ body {
   max-width: 400px;
 }
 
-.signup h2, .form-container h2 {
+.signup h2,
+.form-container h2 {
   margin-bottom: 25px;
   color: #fff;
   font-size: 28px;
@@ -59,7 +61,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #e062ff;
+  background-color: #0e0211;
 }
 
 .login-text {
@@ -74,6 +76,7 @@ button[type="submit"]:hover {
   text-decoration: none;
   font-weight: bold;
 }
+
 /*login.html*/
 
 .login-container {
@@ -83,7 +86,7 @@ button[type="submit"]:hover {
   background-color: #36123F;
   border-radius: 15px;
   color: white;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .login-container h2 {
@@ -130,5 +133,3 @@ button[type="submit"]:hover {
 .signup-text a:hover {
   text-decoration: underline;
 }
-
-

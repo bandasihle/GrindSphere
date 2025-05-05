@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="/frontend/css/style.css">
+    <link rel="stylesheet" href="/GrindSphere/frontend/css/style.css">
 
 </head>
+<style>
+    body {
+        background-image: url('/GrindSphere/frontend/images/Login.jpeg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 100%;
+    }
+</style>
+
 <body>
     <div class="role-container">
         <h2>How do you want to join?</h2>
@@ -14,13 +25,14 @@
             <div class="role" id="customer">Customer
                 <p class="role-desc"> I'm a client looking for services</p>
             </div>
-            <div class="role" id="hustler">Hustler 
+            <div class="role" id="hustler">Hustler
                 <p class="role-desc">I want to offer my skills and connect with fellow students looking for services</p>
             </div>
         </div>
 
         <button id="join-btn" disabled>Join</button>
-        <div class="login-text">Already have an account? <a href="/frontend/authentication/login.html">Log in</a></div>
+        <div class="login-text">Already have an account? <a href="/GrindSphere/frontend/authentication/login.html">Log
+                in</a></div>
     </div>
 
     <script>
@@ -52,12 +64,13 @@
                 window.location.href = 'signup-hustler.html';
             }
         });
- 
+
     </script>
 
-<footer>
-    <p>&copy; 2025 GrindSphere | All rights reserved</p>
-</footer>
+    <footer>
+        <p>&copy; 2025 GrindSphere | All rights reserved</p>
+    </footer>
 
 </body>
+
 </html>
