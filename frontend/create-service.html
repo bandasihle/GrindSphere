@@ -172,7 +172,10 @@
 <body>
   <div class="dashboard">
     <h2>Create New Service</h2>
-    <form id="createServiceForm" enctype="multipart/form-data">
+
+    <!-- Corrected the form tag, removed the nested form -->
+    <form id="createServiceForm" action="/services/image" method="POST" enctype="multipart/form-data">
+  
       <input type="text" name="title" placeholder="Service Title" required />
       <textarea name="description" placeholder="Description" required></textarea>
       <input type="number" name="price" placeholder="Price (e.g. 99.99)" step="0.01" required />
@@ -189,29 +192,37 @@
       <button type="submit">Create Service</button>
     </form>
     <p id="message"></p>
-  </div>
+</div>
+
   
   <script>
     const form = document.getElementById('createServiceForm');
   
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(form); // Ensure the form is passed as FormData
   
-      const formData = new FormData(form);
+    try {
+      const res = await fetch('http://localhost:3000/services/image', { // Correct API endpoint
+        method: 'POST',
+        body: formData // Automatically handles file and data
+      });
   
-      try {
-        const res = await fetch('http://localhost:3000/services', {
-          method: 'POST',
-          body: formData
-        });
-  
-        const result = await res.json();
-        document.getElementById('message').textContent = result.message || 'Something went wrong.';
-      } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('message').textContent = 'Network error.';
+      // Check if the response is a success
+      if (res.ok) {
+        const result = await res.json(); // Parse the JSON response
+        document.getElementById('message').textContent = result.message || 'Service created successfully!';
+      } else {
+        const errorText = await res.text();
+        document.getElementById('message').textContent = `Error: ${errorText}`;
       }
-    });
+    } catch (error) {
+      console.error('Error:', error);
+      document.getElementById('message').textContent = 'Network error.';
+    }
+  });
+  
   </script>
   
 </body>
