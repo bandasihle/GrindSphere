@@ -16,7 +16,7 @@ app.set('views', path.join(__dirname, 'views')); // Set the views folder (where 
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static('uploads')); // Serve static files for uploaded images
 
 // Multer config for image upload
 const storage = multer.diskStorage({
@@ -67,47 +67,24 @@ app.post('/login', async (req, res) => {
 });
 
 // ===========================
-// CRUD Services
+// CRUD Services (Including Image Upload)
 // ===========================
-app.post('/api/services', async (req, res) => {
+app.post('/services/image', upload.single('image'), async (req, res) => {
   const { hustler_id, title, description, price, category, location } = req.body;
-  try {
-    const [result] = await db.promise().execute(
-      'INSERT INTO services (hustler_id, title, description, price, category, location) VALUES (?, ?, ?, ?, ?, ?)',
-      [hustler_id, title, description, price, category, location]
-    );
-    res.status(201).json({ message: 'Service created', serviceId: result.insertId });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  const image_url = req.file ? `/uploads/${req.file.filename}` : null; // Correctly reference the uploaded image
+
+  if (!hustler_id || !title || !description || !price || !category || !location || !image_url) {
+    return res.status(400).json({ error: 'All fields are required, including image' });
   }
-});
 
-app.get('/api/services', async (req, res) => {
   try {
-    const [rows] = await db.promise().execute('SELECT * FROM services');
-    res.status(200).json(rows);
+    // Insert the service details into the database
+    const sql = 'INSERT INTO services (hustler_id, title, description, price, category, location, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const [result] = await db.promise().execute(sql, [hustler_id, title, description, price, category, location, image_url]);
+    res.status(201).json({ message: 'Service created successfully', serviceId: result.insertId });
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching services' });
+    res.status(500).json({ error: 'Database error creating service' });
   }
-});
-
-// ===========================
-// Service Search
-// ===========================
-app.get('/services', (req, res) => {
-  const { category, location, hustlerId } = req.query;
-
-  let sql = 'SELECT s.*, u.name AS hustler_name FROM services s JOIN users u ON s.hustler_id = u.id WHERE 1';
-  const values = [];
-
-  if (category) { sql += ' AND s.category = ?'; values.push(category); }
-  if (location) { sql += ' AND s.location = ?'; values.push(location); }
-  if (hustlerId) { sql += ' AND s.hustler_id = ?'; values.push(hustlerId); }
-
-  db.query(sql, values, (err, results) => {
-    if (err) return res.status(500).json({ error: 'Failed to get services' });
-    res.json(results);
-  });
 });
 
 // ===========================
@@ -122,4 +99,9 @@ app.get('/create-service', (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+
+
+
+
 

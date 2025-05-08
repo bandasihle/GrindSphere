@@ -81,149 +81,176 @@
       font-weight: 500;
       color: green;
     }
+
+    /* Image Preview (optional) */
+    #imagePreview {
+      max-width: 100%;
+      max-height: 200px;
+      margin-top: 1rem;
+      display: block;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
     /* Container for create service form */
-.create-service-form {
-  max-width: 600px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
-}
+    .create-service-form {
+      max-width: 600px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    }
 
-/* Form Title */
-.create-service-form h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  color: #333;
-}
+    /* Form Title */
+    .create-service-form h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: #333;
+    }
 
-/* Form Layout */
-.create-service-form form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
+    /* Form Layout */
+    .create-service-form form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
 
-/* Labels for inputs */
-.create-service-form label {
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
+    /* Labels for inputs */
+    .create-service-form label {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
 
-/* Input and Textarea Fields */
-.create-service-form input[type="text"],
-.create-service-form input[type="number"],
-.create-service-form textarea,
-.create-service-form input[type="file"] {
-  padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 1rem;
-  width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.2s;
-}
+    /* Input and Textarea Fields */
+    .create-service-form input[type="text"],
+    .create-service-form input[type="number"],
+    .create-service-form textarea,
+    .create-service-form input[type="file"] {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
 
-.create-service-form input:focus,
-.create-service-form textarea:focus,
-.create-service-form input[type="file"]:focus {
-  border-color: #007bff;
-  outline: none;
-}
+    .create-service-form input:focus,
+    .create-service-form textarea:focus,
+    .create-service-form input[type="file"]:focus {
+      border-color: #007bff;
+      outline: none;
+    }
 
-/* Buttons */
-.create-service-form button {
-  padding: 0.8rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
+    /* Buttons */
+    .create-service-form button {
+      padding: 0.8rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
 
-.create-service-form button:hover {
-  background-color: #0056b3;
-}
+    .create-service-form button:hover {
+      background-color: #0056b3;
+    }
 
-/* Message Paragraph */
-#message {
-  text-align: center;
-  font-weight: 500;
-  color: green;
-}
+    /* Message Paragraph */
+    #message {
+      text-align: center;
+      font-weight: 500;
+      color: green;
+    }
 
-/* Image Preview (optional) */
-#imagePreview {
-  max-width: 100%;
-  max-height: 200px;
-  margin-top: 1rem;
-  display: block;
-  object-fit: contain;
-  border-radius: 10px;
-}
+    /* Image Preview (optional) */
+    #imagePreview {
+      max-width: 100%;
+      max-height: 200px;
+      margin-top: 1rem;
+      display: block;
+      object-fit: contain;
+      border-radius: 10px;
+    }
 
-    </style>
+  </style>
 </head>
 <body>
-  <div class="dashboard">
+  <div class="create-service-form">
     <h2>Create New Service</h2>
 
     <!-- Corrected the form tag, removed the nested form -->
-    <form id="createServiceForm" action="/services/image" method="POST" enctype="multipart/form-data">
-  
+    <form id="createServiceForm" action="http://localhost:3000/services/image" method="POST" enctype="multipart/form-data">
       <input type="text" name="title" placeholder="Service Title" required />
       <textarea name="description" placeholder="Description" required></textarea>
       <input type="number" name="price" placeholder="Price (e.g. 99.99)" step="0.01" required />
       <input type="text" name="category" placeholder="Category" required />
       <input type="text" name="location" placeholder="Location" required />
-  
+   
       <!-- Hidden field for hustler_id -->
       <input type="hidden" name="hustler_id" value="<%= hustler_id %>" />
-  
+   
       <!-- File input for image -->
       <label for="image">Service Image:</label>
       <input type="file" name="image" id="image" accept="image/*" required />
-  
-      <button type="submit">Create Service</button>
-    </form>
-    <p id="message"></p>
-</div>
+   
+      <!-- Image preview -->
+      <img id="imagePreview" src="" alt="Image Preview" />
 
-  
+      <button type="submit">Create Service</button>
+   </form>
+   
+    <p id="message"></p>
+  </div>
+
   <script>
-    const form = document.getElementById('createServiceForm');
-  
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData(form); // Ensure the form is passed as FormData
-  
-    try {
-      const res = await fetch('http://localhost:3000/services/image', { // Correct API endpoint
-        method: 'POST',
-        body: formData // Automatically handles file and data
-      });
-  
-      // Check if the response is a success
-      if (res.ok) {
-        const result = await res.json(); // Parse the JSON response
-        document.getElementById('message').textContent = result.message || 'Service created successfully!';
+    // Handle image preview
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('imagePreview');
+
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          imagePreview.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
       } else {
-        const errorText = await res.text();
-        document.getElementById('message').textContent = `Error: ${errorText}`;
+        imagePreview.src = '';  // Clear preview if no file is selected
       }
-    } catch (error) {
-      console.error('Error:', error);
-      document.getElementById('message').textContent = 'Network error.';
-    }
-  });
-  
+    });
+
+    // Handle form submission
+    const form = document.getElementById('createServiceForm');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();  // Prevent default form submission
+
+      const formData = new FormData(form);  // Create FormData object from the form
+
+      try {
+        const response = await fetch('http://localhost:3000/services/image', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          document.getElementById('message').innerText = 'Service created successfully';
+          form.reset(); // Reset form after successful submission
+        } else {
+          document.getElementById('message').innerText = result.error || 'Failed to create service';
+        }
+      } catch (error) {
+        console.error('Error during form submission:', error);
+        document.getElementById('message').innerText = 'An error occurred. Please try again later.';
+      }
+    });
   </script>
-  
 </body>
 </html>
