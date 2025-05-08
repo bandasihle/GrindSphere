@@ -1,4 +1,3 @@
-// Required Modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
@@ -10,29 +9,35 @@ const db = require('./db');
 const app = express();
 const port = 3000;
 
-// Set EJS as the view engine
+// Set EJS view engine and views path
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // Set the views folder (where your .ejs files will be stored)
+app.set('views', path.join(__dirname, 'views'));
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/uploads', express.static('uploads')); // Serve static files for uploaded images
+app.use(bodyParser.urlencoded({ extended: true })); // For handling form POST requests
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded images statically
 
-// Multer config for image upload
+// ========================
+// Multer Setup
+// ========================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
-  filename: (req, file, cb) => cb(null, `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`)
+  filename: (req, file, cb) =>
+    cb(null, `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`)
 });
 const upload = multer({ storage });
 
-// ===========================
+// ========================
 // Signup Route
-// ===========================
+// ========================
 app.post('/signup', async (req, res) => {
   const { name, email, password, role, skill } = req.body;
   try {
     const [existing] = await db.promise().query('SELECT * FROM users WHERE email = ?', [email]);
-    if (existing.length > 0) return res.status(400).json({ message: 'Email is already registered' });
+    if (existing.length > 0)
+      return res.status(400).json({ message: 'Email is already registered' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const query = 'INSERT INTO users (name, email, password, role, skill) VALUES (?, ?, ?, ?, ?)';
@@ -44,18 +49,20 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-// ===========================
+// ========================
 // Login Route
-// ===========================
+// ========================
 app.post('/login', async (req, res) => {
   const { email, password, role } = req.body;
   try {
     const [rows] = await db.promise().execute('SELECT * FROM users WHERE email = ? AND role = ?', [email, role]);
-    if (rows.length === 0) return res.status(401).json({ message: 'User not found or role mismatch' });
+    if (rows.length === 0)
+      return res.status(401).json({ message: 'User not found or role mismatch' });
 
     const user = rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
+    if (!isMatch)
+      return res.status(401).json({ message: 'Incorrect password' });
 
     res.status(200).json({
       message: 'Login successful',
@@ -66,36 +73,44 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// ===========================
-// CRUD Services (Including Image Upload)
-// ===========================
+// ========================
+// Create Service with Image Upload
+// ========================
 app.post('/services/image', upload.single('image'), async (req, res) => {
   const { hustler_id, title, description, price, category, location } = req.body;
-  const image_url = req.file ? `/uploads/${req.file.filename}` : null; // Correctly reference the uploaded image
+  const image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
   if (!hustler_id || !title || !description || !price || !category || !location || !image_url) {
     return res.status(400).json({ error: 'All fields are required, including image' });
   }
 
   try {
-    // Insert the service details into the database
-    const sql = 'INSERT INTO services (hustler_id, title, description, price, category, location, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const [result] = await db.promise().execute(sql, [hustler_id, title, description, price, category, location, image_url]);
+    const sql = `
+      INSERT INTO services (hustler_id, title, description, price, category, location, image_url)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    const [result] = await db.promise().execute(sql, [
+      hustler_id, title, description, price, category, location, image_url
+    ]);
+
     res.status(201).json({ message: 'Service created successfully', serviceId: result.insertId });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Database error creating service' });
   }
 });
 
-// ===========================
-// Views
-// ===========================
+// ========================
+// View to Render HTML Form (for testing in browser)
+// ========================
 app.get('/create-service', (req, res) => {
-  // Render the create-service view and pass any necessary data (e.g., hustler_id)
+  // Replace 'some_id' with the actual hustler's ID when integrating with frontend
   res.render('create-service', { hustler_id: 'some_id' });
 });
 
+// ========================
 // Start Server
+// ========================
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
