@@ -84,6 +84,12 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
     return res.status(400).json({ error: 'All fields are required, including image' });
   }
 
+  // Verify hustler_id exists in the users table
+  const [userExists] = await db.promise().query('SELECT * FROM users WHERE id = ?', [hustler_id]);
+  if (userExists.length === 0) {
+    return res.status(400).json({ error: 'Invalid hustler ID. User not found.' });
+  }
+
   try {
     const sql = `
       INSERT INTO services (hustler_id, title, description, price, category, location, image_url)
@@ -104,8 +110,8 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
 // View to Render HTML Form (for testing in browser)
 // ========================
 app.get('/create-service', (req, res) => {
-  // Replace 'some_id' with the actual hustler's ID when integrating with frontend
-  res.render('create-service', { hustler_id: 'some_id' });
+  // Here, you would pass the actual hustler_id based on the logged-in user
+  res.render('create-service', { hustler_id: 1 });  // Example with a hardcoded hustler_id
 });
 
 // ========================
@@ -114,6 +120,7 @@ app.get('/create-service', (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
 
