@@ -178,16 +178,25 @@ app.get('/services/hustler', async (req, res) => {
   }
 
   try {
+    // Option 1: If you have an 'id' column you can sort by that instead
     const [services] = await db.promise().query(
-      'SELECT * FROM services WHERE hustler_id = ? ORDER BY created_at DESC',
+      'SELECT * FROM services WHERE hustler_id = ? ORDER BY id DESC',
       [hustlerId]
     );
+    
+    // Option 2: If you don't want any sorting
+    // const [services] = await db.promise().query(
+    //   'SELECT * FROM services WHERE hustler_id = ?',
+    //   [hustlerId]
+    // );
+    
     res.status(200).json(services);
   } catch (error) {
     console.error('Get hustler services error:', error);
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
+
 
 // ========================
 // Booking Route (For Customer Dashboard)
