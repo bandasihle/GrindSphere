@@ -4,122 +4,156 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
-const db = require('./db');
+const fs = require('fs');
+const db = require('./db'); // Make sure db.js exports a connected pool
 
 const app = express();
 const port = 3000;
 
-// Set EJS view engine and views path
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
+// ========================
 // Middleware
+// ========================
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // For handling form POST requests
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded images statically
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ========================
 // Multer Setup
 // ========================
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
-  filename: (req, file, cb) =>
-    cb(null, `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`)
+  destination: (req, file, cb) => {
+    const uploadDir = 'uploads/';
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${path.extname(file.originalname)}`;
+    cb(null, uniqueName);
+  }
 });
+
 const upload = multer({ storage });
 
 // ========================
-// Signup Route
+// User Signup Route
 // ========================
 app.post('/signup', async (req, res) => {
   const { name, email, password, role, skill } = req.body;
+
+  if (!name || !email || !password || !role) {
+    return res.status(400).json({ message: 'All fields are required (except skill)' });
+  }
+
   try {
-    const [existing] = await db.promise().query('SELECT * FROM users WHERE email = ?', [email]);
-    if (existing.length > 0)
-      return res.status(400).json({ message: 'Email is already registered' });
+    const [existing] = await db.promise().query('SELECT id FROM users WHERE email = ?', [email]);
+    if (existing.length > 0) {
+      return res.status(400).json({ message: 'Email already registered' });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const query = 'INSERT INTO users (name, email, password, role, skill) VALUES (?, ?, ?, ?, ?)';
-    await db.promise().execute(query, [name, email, hashedPassword, role, skill || null]);
+    const sql = 'INSERT INTO users (name, email, password, role, skill) VALUES (?, ?, ?, ?, ?)';
+    await db.promise().execute(sql, [name, email, hashedPassword, role, skill || null]);
 
-    res.status(200).json({ message: 'User registered successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Signup error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
 
 // ========================
-// Login Route
+// User Login Route
 // ========================
 app.post('/login', async (req, res) => {
   const { email, password, role } = req.body;
-  try {
-    const [rows] = await db.promise().execute('SELECT * FROM users WHERE email = ? AND role = ?', [email, role]);
-    if (rows.length === 0)
-      return res.status(401).json({ message: 'User not found or role mismatch' });
 
-    const user = rows[0];
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
+  if (!email || !password || !role) {
+    return res.status(400).json({ message: 'Email, password, and role are required' });
+  }
+
+  try {
+    const [users] = await db.promise().query('SELECT * FROM users WHERE email = ? AND role = ?', [email, role]);
+
+    if (users.length === 0) {
+      return res.status(401).json({ message: 'User not found or role mismatch' });
+    }
+
+    const user = users[0];
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
       return res.status(401).json({ message: 'Incorrect password' });
+    }
 
     res.status(200).json({
       message: 'Login successful',
-      user: { id: user.id, name: user.name, email: user.email, role: user.role, skill: user.skill || null }
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        skill: user.skill || null,
+      },
     });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error during login', error: err.message });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
 
 // ========================
-// Create Service with Image Upload
+// Create Service Route (Image Upload)
 // ========================
 app.post('/services/image', upload.single('image'), async (req, res) => {
   const { hustler_id, title, description, price, category, location } = req.body;
   const image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
   if (!hustler_id || !title || !description || !price || !category || !location || !image_url) {
-    return res.status(400).json({ error: 'All fields are required, including image' });
-  }
-
-  // Verify hustler_id exists in the users table
-  const [userExists] = await db.promise().query('SELECT * FROM users WHERE id = ?', [hustler_id]);
-  if (userExists.length === 0) {
-    return res.status(400).json({ error: 'Invalid hustler ID. User not found.' });
+    return res.status(400).json({ message: 'All fields including image are required' });
   }
 
   try {
+    const [userCheck] = await db.promise().query('SELECT id FROM users WHERE id = ? AND role = "hustler"', [hustler_id]);
+    if (userCheck.length === 0) {
+      return res.status(400).json({ message: 'Invalid hustler ID or hustler does not exist' });
+    }
+
     const sql = `
       INSERT INTO services (hustler_id, title, description, price, category, location, image_url)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
     const [result] = await db.promise().execute(sql, [
-      hustler_id, title, description, price, category, location, image_url
+      hustler_id,
+      title,
+      description,
+      price,
+      category,
+      location,
+      image_url,
     ]);
 
-    res.status(201).json({ message: 'Service created successfully', serviceId: result.insertId });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Database error creating service' });
+    res.status(201).json({
+      message: 'Service created successfully',
+      serviceId: result.insertId,
+      image_url, // Send back the image URL in the response
+    });
+  } catch (error) {
+    console.error('Create service error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
 
 // ========================
-// View to Render HTML Form (for testing in browser)
-// ========================
-app.get('/create-service', (req, res) => {
-  // Here, you would pass the actual hustler_id based on the logged-in user
-  res.render('create-service', { hustler_id: 1 });  // Example with a hardcoded hustler_id
-});
-
-// ========================
-// Start Server
+// Start the Server
 // ========================
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`🚀 Server is running at http://localhost:${port}`);
 });
+
+
 
 
 
