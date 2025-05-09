@@ -5,18 +5,22 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const db = require('./db');
+const db = require('./db'); // Make sure db.js exports a connected pool
 
 const app = express();
 const port = 3000;
 
+// ========================
 // Middleware
+// ========================
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// ========================
 // Multer Setup
+// ========================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = 'uploads/';
@@ -33,7 +37,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Routes
+// ========================
+// User Signup Route
+// ========================
 app.post('/signup', async (req, res) => {
   const { name, email, password, role, skill } = req.body;
 
@@ -58,6 +64,9 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+// ========================
+// User Login Route
+// ========================
 app.post('/login', async (req, res) => {
   const { email, password, role } = req.body;
 
@@ -95,6 +104,9 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// ========================
+// Create Service Route (Image Upload)
+// ========================
 app.post('/services/image', upload.single('image'), async (req, res) => {
   const { hustler_id, title, description, price, category, location } = req.body;
   const image_url = req.file ? `/uploads/${req.file.filename}` : null;
@@ -126,7 +138,7 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
     res.status(201).json({
       message: 'Service created successfully',
       serviceId: result.insertId,
-      image_url,
+      image_url, // Send back the image URL in the response
     });
   } catch (error) {
     console.error('Create service error:', error);
@@ -134,6 +146,10 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
   }
 });
 
+
+// ========================
+// Get All Services Route (For Customer Dashboard)
+// ========================
 app.get('/services', async (req, res) => {
   try {
     const [services] = await db.promise().query(`
@@ -151,6 +167,9 @@ app.get('/services', async (req, res) => {
   }
 });
 
+// ========================
+// Get Services by Hustler ID (For Hustler Dashboard)
+// ========================
 app.get('/services/hustler', async (req, res) => {
   const { hustlerId } = req.query;
 
@@ -170,6 +189,9 @@ app.get('/services/hustler', async (req, res) => {
   }
 });
 
+// ========================
+// Booking Route (For Customer Dashboard)
+// ========================
 app.post('/bookings', async (req, res) => {
   const { serviceId, customerId } = req.body;
 
@@ -178,11 +200,13 @@ app.post('/bookings', async (req, res) => {
   }
 
   try {
+    // Check if service exists
     const [service] = await db.promise().query('SELECT * FROM services WHERE id = ?', [serviceId]);
     if (service.length === 0) {
       return res.status(404).json({ message: 'Service not found' });
     }
 
+    // Create booking
     await db.promise().execute(
       'INSERT INTO bookings (service_id, customer_id, status) VALUES (?, ?, "pending")',
       [serviceId, customerId]
@@ -194,11 +218,14 @@ app.post('/bookings', async (req, res) => {
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
-
-// Start server
+// ========================
+// Start the Server
+// ========================
 app.listen(port, () => {
   console.log(`🚀 Server is running at http://localhost:${port}`);
 });
+
+
 
 
 
