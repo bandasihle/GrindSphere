@@ -415,8 +415,10 @@ footer {
     flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
-    margin: 40px 0;
-}
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
 
 .team-member {
     width: 220px;

@@ -2,10 +2,108 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GrindSphere</title>
-  <link rel="stylesheet" href="/frontend/css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GrindSphere</title>
+    <link rel="stylesheet" href="/frontend/css/style.css" />
+    <!-- Font Awesome for Social Media Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, #050305, #36123F, #624343, #8F37B1);
+        color: white;
+        margin: 0;
+        padding: 20px;
+      }
+  
+      h1 {
+        text-align: center;
+        color: #dd37e9;
+        margin-bottom: 40px;
+      }
+  
+      .search-bar {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+  
+      .search-bar input {
+        padding: 10px;
+        width: 300px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+      }
+  
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+        justify-items: center;
+      }
+  
+      .service-card {
+        background-color: #a591aa55;
+        border-radius: 10px;
+        padding: 20px;
+        width: 100%;
+        max-width: 220px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+  
+      .service-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+  
+      .service-card h3 {
+        font-size: 22px;
+        margin-top: 10px;
+        color: #fff;
+      }
+  
+      .service-card p {
+        font-size: 16px;
+        margin-top: 5px;
+        color: #e0e0e0;
+      }
+  
+      .phone-icon {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+      }
+
+.phone-icon:hover {
+  color: #dd37e9; 
+}
+
+.contact-info {
+  display: flex;
+  align-items: center; 
+}
+
+.contact-info .social-icons a,
+.contact-info .phone-icon {
+  margin-right: 10px;
+  color: white; 
+}
+
+.contact-info .social-icons a:hover,
+.phone-icon:hover {
+  color: #dd37e9; 
+}
+
+      @media (max-width: 768px) {
+        .search-bar input {
+          width: 80%;
+        }
+      }
+    </style>
 
 </head>
 
@@ -15,7 +113,7 @@
   <header>
     <nav>
       <div class="logo">
-        <img src="/GrindSphere/frontend/images/Logolog1.jpeg" alt="HustleSphere Logo">
+       <h1>Grind$phere</h1>
       </div>
 
       <div class="menu-toggle" id="menu-toggle">&#9776;</div>
@@ -42,11 +140,8 @@
 
 
   <main>
-    <section class="welcome">
-      <h1>Welcome to Grind$phere</h1>
-      <p>Connect with fellow students offering services and showcase your own business.</p>
-
-    </section>
+  
+    <h1>Explore Student Hustles</h1>
 
     <section class="search-section">
       <input type="text" placeholder="Search services..." id="search-bar" class="search-bar">
@@ -54,51 +149,267 @@
 
     <!-- Category Bubbles Section -->
     <section class="category-bubbles">
-      <div class="bubble">Nails</div>
-      <div class="bubble">Hair</div>
-      <div class="bubble">Tutoring</div>
-      <div class="bubble">Photography</div>
-      <div class="bubble">Barber</div>
+        <div class="bubble" data-category="nails">Nails</div>
+        <div class="bubble" data-category="hair">Hair</div>
+        <div class="bubble" data-category="tutoring">Tutoring</div>
+        <div class="bubble" data-category="photography">Photography</div>
+        <div class="bubble" data-category="barber">Barber</div>
+      <div class="bubble" data-category="all">All</div>
+
     </section>
 
-    <!-- Top Hustlers Section (Profiles in a Row) -->
-    <section class="top-hustlers">
-      <h2>Top Hustlers</h2>
-      <div class="hustler-cards">
-        <div class="hustler-card">
-          <img src="/GrindSphere/frontend/images/nailtech.jpg" alt="Nail Tech">
-          <h3>Nails by Sandi</h3>
-          <p>Professional nail services with a touch of style!</p>
-        </div>
-        <div class="hustler-card">
-          <img src="/GrindSphere/frontend/images/_photography.jpg" alt="Photography Service">
-          <h3>FLICKSbyTHABI</h3>
-          <p>Capture memories with professional photography.</p>
-        </div>
-        <div class="hustler-card">
-          <img src="/GrindSphere/frontend/images/Coding1.jpeg" alt="Coding Service" height="180px">
-          <h3>codeAMP</h3>
-          <p>Bringing your app ideas to life with quality code!</p>
-        </div>
-        <div class="hustler-card">
-          <img src="/GrindSphere/frontend/images/cakezee.jpg" alt="Baking Service">
-          <h3>CakesZee</h3>
-          <p>Delicious custom cakes for all occasions!</p>
+
+  
+  <div class="services-grid">
+    <!-- Service Cards -->
+    <div class="service-card" data-category="Nails">
+      <img src="../images/nailtech.jpg" alt="Nails by Sandi">
+      <h3>Nails by Sandi</h3>
+      <p>Sandi offers professional nail art with designs tailored to your style. Book now and let your hands do the talking!</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>    
+        <div class="social-icons">
+          <a href="https://instagram.com/nailsbysandiso" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://tiktok.com/@nailsbysandi" target="_blank"><i class="fab fa-tiktok"></i></a>
         </div>
       </div>
-    </section>
-  </main>
-
-  <footer>
-    <!-- Your footer content -->
-  </footer>
-
-  </main>
+    </div>
 
 
 
+    <div class="service-card" data-category="DJ">
+      <img src="../images/dj2.jpg" alt="DJ">
+      <h3>DJ Maps</h3>
+      <p>bringing the beats to campus parties, club nights and formal events. Specialising in Amapiano, afro-fusion and old-school vibes. PLease Support</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/djmaps" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://tiktok.com/@djmaps23" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+    </div>
 
-  <!-- Link to external JavaScript file -->
+    <div class="service-card" data-category="Hair">
+      <img src="../images/hair2.jpg" alt="hairstylist">
+      <h3>The Braid Room</h3>
+      <p>i deal with hair, at an affordable price. silk presses. sew-ins, and natural hair styling with care and precision</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/stylewithchloe" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+  
+
+    <div class="service-card" data-category="Photography">
+      <img src="../images/_photography.jpg" alt="Fitness Training with Sam">
+      <h3>FLICKSbyTHABI</h3>
+      <p>Capture memories with professional photography. i do event and lifestyle photography for campus societies, birthdays, and sports- capturing memories in every frame.</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/fitwithsam" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-category="Code">
+      <img src="../images/Coding1.jpeg" alt="Photography by John">
+      <h3>codeAMP</h3>
+      <p>Bringing your app ideas to life with quality code! I help BICT, HICT, DICT and anyone interested in coding. I specialise in python, java, javascript, html and css
+      </p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/photobyjohn" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-category="Print">
+      <img src="../images/print.jpg" alt=".">
+      <h3>Campus prints</h3>
+      <p>Clara creates custom artwork tailored to your needs. Whether it's a portrait or abstract piece, Clara's art is one-of-a-kind.</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+         
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="service-card" data-category="Hair">
+      <img src="../images/hair.jpg" alt="Graphic Design by Lisa">
+      <h3>Campus Crowns</h3>
+      <p>hi, I'm Lisa and i specialise in braids, twists, locs, and conrow (everything hair). Campus Crowns brings salon-quality styles to your dorm room</p>
+      <div class="contact-info">
+      <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+      <div class="social-icons">
+        <a href="https://instagram.com/djmaps" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@djmaps23" target="_blank"><i class="fab fa-tiktok"></i></a>
+      </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-category="Barber">
+      <img src="../images/barber1.jpg" alt="Digital Marketing by Peter">
+      <h3>Cutz by Zipho</h3>
+      <p>precison fades, crisp line-ups, and smooth tapers-- Zipho keeps you sharp for class, photos or the weekend link-up</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/djmaps" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://tiktok.com/@djmaps23" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+    </div>
+
+   
+
+    <div class="service-card" data-category="Graduation">
+      <img src="../images/grad.jpg" alt="Home Cooking by Carla">
+      <h3>GradLens by Mo</h3>
+      <p>Capturing your prodest moments with elegent campus backdrops and natural lighting--graduation shoots made personal</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/homecookingcarla" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-category="Tutoring">
+      <img src="../images/tutor1.jpg" alt="Pet Sitting by Zoe">
+      <h3>BrainBoost Tutors</h3>
+      <p>One on one tutoring for STEM subjects, essay help, and test prep--by top performing students who have been in your shoes.</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+    
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-category="Nails">
+      <img src="../images/nails1.jpg" alt="Nails by Sandi">
+      <h3>Claws by Malaika</h3>
+      <p>I offer professional nail art with designs tailored to your style. Book now and let your hands do the talking!</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>    
+        <div class="social-icons">
+          <a href="https://instagram.com/nailsbysandi" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://tiktok.com/@nailsbysandi" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-category="Barber">
+      <img src="../images/barber3.jpg" alt="Creative Cakes by Mia">
+      <h3>BladeKulture</h3>
+      <p>more than a cut--it's culture. Fresh designs, custom fades, and cofidence built one chair session at a time</p>
+      <div class="contact-info">
+      <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>    
+      <div class="social-icons">
+        <a href="https://instagram.com/nailsbysandi" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@nailsbysandi" target="_blank"><i class="fab fa-tiktok"></i></a>
+      </div>
+      </div>
+    </div>
+
+  
+    <div class="service-card" data-category="Cakes">
+      <img src="../images/baker.jpg" alt="Personal Styling by Chloe">
+      <h3>Sweet2ooth</h3>
+      <p>Custom cakes, cupcakes, cookies made to order--perfect for birthdays, study treats, graduation, literally anything</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/stylewithchloe" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+  
+
+    <div class="service-card" data-category="DJ">
+      <img src="../images/dj3.jpg" alt="Fitness Training with Sam">
+      <h3>SpinMaster KAT</h3>
+      <p>Your go-to for birthday bashes, club events, and student bashes--KAT spins smooth transitions and big vibes.</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/fitwithsam" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://tiktok.com/@djmaps23" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-category="Tutoring">
+      <img src="../images/tutor2.jpg" alt="Photography by John">
+      <h3>Study with Nolwazi</h3>
+      <p> Making STATS makle sense--personalised tutoring in probabaility, distributions, hypothesis testing, and SPSS/R. </p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/photobyjohn" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-category="Driver">
+      <img src="../images/uber.jpg" alt="Custom Art by Clara">
+      <h3>QhaqweDrives</h3>
+      <p>Safe, friendly rides to campus, grocery runs or weekend trips--by a student</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+         
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="service-card" data-category="Hair">
+      <img src="../images/hair4.jpg" alt="Graphic Design by Lisa">
+      <h3>NolozHair</h3>
+      <p>hi, I'm Nolwazi and i specialise in braids, twists, locs, and conrows. Campus Crowns brings salon-quality styles to your dorm room</p>
+      <div class="contact-info">
+      <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+      <div class="social-icons">
+        <a href="https://instagram.com/djmaps" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@djmaps23" target="_blank"><i class="fab fa-tiktok"></i></a>
+      </div>
+      </div>
+    </div>
+
+    <div class="service-card"data-category="Cakes" >
+      <img src="../images/cakezee.jpg" alt="Creative Cakes by Mia">
+      <h3>CakesZee</h3>
+      <p>Delicious custom cakes for all occasions!</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/creativecakesmia" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card "data-category="Graduation" >
+      <img src="../images/grad2.jpg" alt="Home Cooking by Carla">
+      <h3>CampusGrad Pro</h3>
+      <p>Capturing your prodest moments with elegent campus backdrops and natural lighting--graduation shoots made personal</p>
+      <div class="contact-info">
+        <a href="tel:+271234567890" class="phone-icon"><i class="fas fa-phone"></i></a>
+        <div class="social-icons">
+          <a href="https://instagram.com/homecookingcarla" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+ 
   <script src="script.js"></script>
 
   <script>
@@ -108,12 +419,57 @@
     toggleBtn.addEventListener('click', () => {
       navContainer.classList.toggle('show');
     });
-  </script>
 
 
-  <footer>
-    <p>&copy; 2025 GrindSphere | All rights reserved</p>
-  </footer>
+
+  const searchInput = document.getElementById("search-bar");
+  const serviceCard = document.querySelectorAll(".service-card");
+
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    serviceCards.forEach((card) => {
+      const cardText = card.textContent.toLowerCase();
+      if (cardText.includes(searchTerm)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+
+
+
+  
+  const bubbles = document.querySelectorAll('.bubble');
+  const serviceCards = document.querySelectorAll('.service-card');
+
+  bubbles.forEach(bubble => {
+    bubble.addEventListener('click', () => {
+      const category = bubble.getAttribute('data-category').toLowerCase();
+
+      serviceCards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category')?.toLowerCase() || '';
+
+        // Show all cards if category is "all"
+        if (category === 'all') {
+          card.style.display = 'block';
+        } else {
+          card.style.display = cardCategory.includes(category) ? 'block' : 'none';
+        }
+      });
+    });
+  });
+
+</script>
+
+
+
+
+ 
+
+
+
 </body>
 
 </html>
