@@ -12,13 +12,13 @@
       background-image: url('/frontend/images/Login.jpeg');
       background-repeat: no-repeat;
       background-size: cover;
-      background-repeat: no-repeat;
-      background-position: 100%;
+      background-position: center;
       font-family: sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
 
     .login-box {
@@ -32,6 +32,7 @@
     .login-box h2 {
       margin-bottom: 1rem;
       text-align: center;
+      color: white;
     }
 
     .login-box input,
@@ -80,6 +81,11 @@
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
+      if (!role || !email || !password) {
+        alert('Please fill in all fields');
+        return;
+      }
+
       try {
         const response = await fetch('http://localhost:3000/login', {
           method: 'POST',
@@ -87,14 +93,20 @@
           body: JSON.stringify({ email, password, role })
         });
         const data = await response.json();
+
         if (!response.ok) {
           alert(data.message || 'Login failed');
           return;
         }
 
-        // Store user details in local storage
-        localStorage.setItem("hustlerId", data.user.id);
-        localStorage.setItem("hustlerName", data.user.name);
+        // Store user details in local storage with keys based on role
+        if (data.user.role === 'customer') {
+          localStorage.setItem("customerName", data.user.name);
+          localStorage.setItem("customerId", data.user.id);
+        } else if (data.user.role === 'hustler') {
+          localStorage.setItem("hustlerName", data.user.name);
+          localStorage.setItem("hustlerId", data.user.id);
+        }
 
         // Redirect based on role
         if (data.user.role === 'customer') {

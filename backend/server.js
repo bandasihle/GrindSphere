@@ -88,6 +88,7 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Incorrect password' });
     }
 
+    // Return the user details including role
     res.status(200).json({
       message: 'Login successful',
       user: {
@@ -172,15 +173,12 @@ app.get('/services', async (req, res) => {
 app.get('/services/hustler', async (req, res) => {
   const { hustlerId } = req.query;
 
-  // Debug log to check if hustlerId is received correctly
   console.log('Received hustlerId from query:', hustlerId);
 
-  // Check if hustlerId is provided
   if (!hustlerId) {
     return res.status(400).json({ message: 'Hustler ID is required' });
   }
 
-  // Check if hustlerId is a valid number
   if (isNaN(hustlerId)) {
     return res.status(400).json({ message: 'Hustler ID must be a valid number' });
   }
@@ -191,7 +189,6 @@ app.get('/services/hustler', async (req, res) => {
       [hustlerId]
     );
 
-    // Debug log to check the query result
     console.log('Services found for hustlerId', hustlerId, ':', services);
 
     res.status(200).json(services);
