@@ -6,7 +6,6 @@
   <title>Customer Dashboard | GrindSphere</title>
   <link rel="stylesheet" href="/frontend/css/style.css"/>
   <style>
-    /* Minimal styling if styles.css isn't set yet */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -33,6 +32,8 @@
     }
     .container {
       padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     .search-bar {
       display: flex;
@@ -45,10 +46,11 @@
       border-radius: 5px;
       border: 1px solid #ccc;
       flex: 1;
+      max-width: 300px;
     }
     .service-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.5rem;
     }
     .service-card {
@@ -58,7 +60,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
     .service-card h3 {
       margin: 0.5rem 0;
@@ -66,6 +67,7 @@
     .service-card p {
       font-size: 0.9rem;
       color: #333;
+      margin: 0.3rem 0;
     }
     .book-btn {
       margin-top: 1rem;
@@ -75,6 +77,10 @@
       padding: 0.5rem;
       border-radius: 5px;
       cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .book-btn:hover {
+      background-color: #0b5ed7;
     }
     footer {
       text-align: center;
@@ -83,20 +89,27 @@
       color: #666;
       margin-top: 2rem;
     }
+    .service-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .no-services {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 2rem;
+    }
   </style>
 </head>
 <body>
-
-  <!-- HEADER -->
   <header>
     <div class="welcome">Welcome, <span id="customerName">Customer Name</span> 👋</div>
     <button class="logout" onclick="logout()">Logout</button>
   </header>
 
-  <!-- MAIN CONTENT -->
   <div class="container">
-
-    <!-- SEARCH AND FILTER -->
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search for services...">
       <select id="categoryFilter">
@@ -105,31 +118,34 @@
         <option value="Cleaning">Cleaning</option>
         <option value="Design">Design</option>
         <option value="IT Support">IT Support</option>
-        <!-- Add more based on your DB -->
+        <option value="Photography">Photography</option>
+        <option value="Writing">Writing</option>
       </select>
     </div>
 
-    <!-- SERVICE LISTINGS -->
     <div class="service-grid" id="serviceList">
-      <!-- Services will be dynamically injected here via JavaScript -->
+      <!-- Services will be loaded here -->
     </div>
-
   </div>
 
-  <!-- FOOTER -->
   <footer>
     &copy; 2025 GrindSphere. Empowering Students through Hustles.
   </footer>
 
-  <!-- SCRIPT -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Replace with API call to get customer name
-      document.getElementById("customerName").textContent = localStorage.getItem("customerName") || "John Doe";
+      const customerName = localStorage.getItem("customerName");
+      const customerId = localStorage.getItem("customerId");
+      
+      if (!customerId) {
+        alert("Please log in to access this page");
+        window.location.href = "/frontend/authentication/login.html";
+        return;
+      }
 
+      document.getElementById("customerName").textContent = customerName || "Customer";
       fetchServices();
 
-      // Attach filters
       document.getElementById("searchInput").addEventListener("input", fetchServices);
       document.getElementById("categoryFilter").addEventListener("change", fetchServices);
     });
@@ -138,14 +154,17 @@
       const searchTerm = document.getElementById("searchInput").value.toLowerCase();
       const category = document.getElementById("categoryFilter").value;
 
-      // Fetch from backend
-      fetch('http://localhost:3000/services') // Adjust port/path as needed
-        .then(res => res.json())
+      fetch('http://localhost:3000/services')
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to fetch services');
+          return res.json();
+        })
         .then(data => {
           const filtered = data.filter(service => {
             const matchesCategory = category === "" || service.category === category;
             const matchesSearch = service.title.toLowerCase().includes(searchTerm) ||
-                                  service.description.toLowerCase().includes(searchTerm);
+                                 service.description.toLowerCase().includes(searchTerm) ||
+                                 service.hustler_name.toLowerCase().includes(searchTerm);
             return matchesCategory && matchesSearch;
           });
 
@@ -153,15 +172,20 @@
         })
         .catch(err => {
           console.error("Failed to fetch services:", err);
+          document.getElementById("serviceList").innerHTML = 
+            `<div class="no-services"><p>Error loading services. Please try again later.</p></div>`;
         });
     }
 
     function renderServices(services) {
       const container = document.getElementById("serviceList");
-      container.innerHTML = ""; // Clear existing
+      container.innerHTML = "";
 
       if (services.length === 0) {
-        container.innerHTML = "<p>No services found.</p>";
+        container.innerHTML = `
+          <div class="no-services">
+            <p>No services found matching your criteria.</p>
+          </div>`;
         return;
       }
 
@@ -170,9 +194,12 @@
         card.className = "service-card";
 
         card.innerHTML = `
+          <img src="${service.image_url}" alt="${service.title}" class="service-image">
           <h3>${service.title}</h3>
+          <p><strong>By:</strong> ${service.hustler_name}</p>
           <p><strong>Category:</strong> ${service.category}</p>
           <p><strong>Price:</strong> R${service.price}</p>
+          <p><strong>Location:</strong> ${service.location}</p>
           <p>${service.description}</p>
           <button class="book-btn" onclick="bookService(${service.id})">Book Now</button>
         `;
@@ -185,21 +212,27 @@
       const customerId = localStorage.getItem("customerId");
       if (!customerId) {
         alert("Please log in again.");
+        window.location.href = "/frontend/authentication/login.html";
         return;
       }
+
+      if (!confirm("Are you sure you want to book this service?")) return;
 
       fetch('http://localhost:3000/bookings', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ serviceId, customerId })
       })
-      .then(res => res.json())
-      .then(response => {
-        alert("Booking confirmed!");
+      .then(res => {
+        if (!res.ok) throw new Error('Booking failed');
+        return res.json();
+      })
+      .then(() => {
+        alert("Booking confirmed! The hustler will contact you soon.");
       })
       .catch(err => {
         console.error("Booking failed:", err);
-        alert("Failed to book the service. Try again.");
+        alert("Failed to book the service. Please try again.");
       });
     }
 
@@ -208,6 +241,5 @@
       window.location.href = "/frontend/authentication/login.html";
     }
   </script>
-
 </body>
 </html>

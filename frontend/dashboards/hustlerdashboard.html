@@ -57,7 +57,7 @@
 
     .service-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.5rem;
     }
 
@@ -76,6 +76,7 @@
     .service-card p {
       font-size: 0.9rem;
       color: #333;
+      margin: 0.3rem 0;
     }
 
     .btn-group {
@@ -110,53 +111,66 @@
       color: #666;
       margin-top: 2rem;
     }
+
+    .service-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 
 <body>
-
-  <!-- HEADER -->
   <header>
     <div class="welcome">Welcome, <span id="hustlerName">Hustler Name</span> 💼</div>
     <button class="logout" onclick="logout()">Logout</button>
   </header>
 
-  <!-- MAIN CONTENT -->
   <div class="container">
-
-    <!-- CREATE SERVICE BUTTON -->
     <div class="top-actions">
       <h2>Your Services</h2>
       <button onclick="location.href='/frontend/create-service.html'">+ Create New Service</button>
     </div>
 
-    <!-- HUSTLER SERVICES -->
     <div class="service-grid" id="hustlerServices">
-      <!-- Dynamically injected services -->
+      <!-- Services will be loaded here -->
     </div>
-
   </div>
 
-  <!-- FOOTER -->
   <footer>
     &copy; 2025 GrindSphere. Hustle Hard. Hustle Smart.
   </footer>
 
-  <!-- SCRIPT -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("hustlerName").textContent = localStorage.getItem("hustlerName") || "Your Name";
+      const hustlerName = localStorage.getItem("hustlerName");
+      const hustlerId = localStorage.getItem("hustlerId");
+      
+      if (!hustlerId) {
+        alert("Please log in to access this page");
+        window.location.href = "/frontend/authentication/login.html";
+        return;
+      }
+
+      document.getElementById("hustlerName").textContent = hustlerName || "Your Name";
       fetchHustlerServices();
     });
 
     function fetchHustlerServices() {
       const hustlerId = localStorage.getItem("hustlerId");
-
-      fetch(`http://localhost:3000/services?hustlerId=${hustlerId}`)
-        .then(res => res.json())
+      
+      fetch(`http://localhost:3000/services/hustler?hustlerId=${hustlerId}`)
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to fetch services');
+          return res.json();
+        })
         .then(data => renderServices(data))
         .catch(err => {
           console.error("Error loading services:", err);
+          document.getElementById("hustlerServices").innerHTML = 
+            `<p style="grid-column: 1/-1; text-align: center;">Error loading services. Please try again later.</p>`;
         });
     }
 
@@ -165,7 +179,14 @@
       container.innerHTML = "";
 
       if (services.length === 0) {
-        container.innerHTML = "<p>You haven’t listed any services yet.</p>";
+        container.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center;">
+            <p>You haven't listed any services yet.</p>
+            <button onclick="location.href='/frontend/create-service.html'" 
+                    style="margin-top: 1rem; padding: 0.5rem 1rem;">
+              Create Your First Service
+            </button>
+          </div>`;
         return;
       }
 
@@ -174,9 +195,11 @@
         card.className = "service-card";
 
         card.innerHTML = `
+          <img src="${service.image_url}" alt="${service.title}" class="service-image">
           <h3>${service.title}</h3>
           <p><strong>Category:</strong> ${service.category}</p>
           <p><strong>Price:</strong> R${service.price}</p>
+          <p><strong>Location:</strong> ${service.location}</p>
           <p>${service.description}</p>
           <div class="btn-group">
             <button class="btn-edit" onclick="editService(${service.id})">Edit</button>
@@ -198,14 +221,17 @@
       fetch(`http://localhost:3000/services/${serviceId}`, {
         method: 'DELETE'
       })
-        .then(res => res.json())
-        .then(data => {
-          alert("Service deleted.");
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to delete service');
+          return res.json();
+        })
+        .then(() => {
+          alert("Service deleted successfully");
           fetchHustlerServices();
         })
         .catch(err => {
           console.error("Delete failed:", err);
-          alert("Failed to delete service.");
+          alert("Failed to delete service. Please try again.");
         });
     }
 
@@ -214,7 +240,5 @@
       window.location.href = "/frontend/authentication/login.html";
     }
   </script>
-
 </body>
-
 </html>

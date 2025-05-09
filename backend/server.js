@@ -146,6 +146,78 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
   }
 });
 
+
+// ========================
+// Get All Services Route (For Customer Dashboard)
+// ========================
+app.get('/services', async (req, res) => {
+  try {
+    const [services] = await db.promise().query(`
+      SELECT 
+        s.*,
+        u.name as hustler_name
+      FROM services s
+      JOIN users u ON s.hustler_id = u.id
+      ORDER BY s.created_at DESC
+    `);
+    res.status(200).json(services);
+  } catch (error) {
+    console.error('Get services error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
+// ========================
+// Get Services by Hustler ID (For Hustler Dashboard)
+// ========================
+app.get('/services/hustler', async (req, res) => {
+  const { hustlerId } = req.query;
+
+  if (!hustlerId) {
+    return res.status(400).json({ message: 'Hustler ID is required' });
+  }
+
+  try {
+    const [services] = await db.promise().query(
+      'SELECT * FROM services WHERE hustler_id = ? ORDER BY created_at DESC',
+      [hustlerId]
+    );
+    res.status(200).json(services);
+  } catch (error) {
+    console.error('Get hustler services error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
+// ========================
+// Booking Route (For Customer Dashboard)
+// ========================
+app.post('/bookings', async (req, res) => {
+  const { serviceId, customerId } = req.body;
+
+  if (!serviceId || !customerId) {
+    return res.status(400).json({ message: 'Service ID and Customer ID are required' });
+  }
+
+  try {
+    // Check if service exists
+    const [service] = await db.promise().query('SELECT * FROM services WHERE id = ?', [serviceId]);
+    if (service.length === 0) {
+      return res.status(404).json({ message: 'Service not found' });
+    }
+
+    // Create booking
+    await db.promise().execute(
+      'INSERT INTO bookings (service_id, customer_id, status) VALUES (?, ?, "pending")',
+      [serviceId, customerId]
+    );
+
+    res.status(201).json({ message: 'Booking created successfully' });
+  } catch (error) {
+    console.error('Booking error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
 // ========================
 // Start the Server
 // ========================
