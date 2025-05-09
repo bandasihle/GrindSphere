@@ -119,6 +119,24 @@
       border-radius: 8px;
       margin-bottom: 1rem;
     }
+
+    .empty-state {
+      grid-column: 1/-1;
+      text-align: center;
+    }
+
+    .empty-state p {
+      margin-bottom: 1rem;
+    }
+
+    .empty-state button {
+      background-color: #f3f3f3;
+      color: rgb(207, 93, 93);
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -146,9 +164,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const hustlerName = localStorage.getItem("hustlerName");
-     // const hustlerId = localStorage.getItem("hustlerId");
-     const hustlerId =1;
-      
+      const hustlerId = localStorage.getItem("hustlerId");
+     
+
       if (!hustlerId) {
         alert("Please log in to access this page");
         window.location.href = "/frontend/authentication/login.html";
@@ -162,6 +180,15 @@
     function fetchHustlerServices() {
       const hustlerId = localStorage.getItem("hustlerId");
       
+      // Check if hustlerId is still not available
+      if (!hustlerId) {
+        document.getElementById("hustlerServices").innerHTML = 
+          `<div class="empty-state">
+            <p>Please log in to view your services.</p>
+          </div>`;
+        return;
+      }
+
       fetch(`http://localhost:3000/services/hustler?hustlerId=${hustlerId}`)
         .then(res => {
           if (!res.ok) throw new Error('Failed to fetch services');
@@ -171,7 +198,9 @@
         .catch(err => {
           console.error("Error loading services:", err);
           document.getElementById("hustlerServices").innerHTML = 
-            `<p style="grid-column: 1/-1; text-align: center;">Error loading services. Please try again later.</p>`;
+            `<div class="empty-state">
+              <p>Error loading services. Please try again later.</p>
+            </div>`;
         });
     }
 
@@ -181,7 +210,7 @@
 
       if (services.length === 0) {
         container.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center;">
+          <div class="empty-state">
             <p>You haven't listed any services yet.</p>
             <button onclick="location.href='/frontend/create-service.html'" 
                     style="margin-top: 1rem; padding: 0.5rem 1rem;">

@@ -146,7 +146,6 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
   }
 });
 
-
 // ========================
 // Get All Services Route (For Customer Dashboard)
 // ========================
@@ -173,30 +172,34 @@ app.get('/services', async (req, res) => {
 app.get('/services/hustler', async (req, res) => {
   const { hustlerId } = req.query;
 
+  // Debug log to check if hustlerId is received correctly
+  console.log('Received hustlerId from query:', hustlerId);
+
+  // Check if hustlerId is provided
   if (!hustlerId) {
     return res.status(400).json({ message: 'Hustler ID is required' });
   }
 
+  // Check if hustlerId is a valid number
+  if (isNaN(hustlerId)) {
+    return res.status(400).json({ message: 'Hustler ID must be a valid number' });
+  }
+
   try {
-    // Option 1: If you have an 'id' column you can sort by that instead
     const [services] = await db.promise().query(
       'SELECT * FROM services WHERE hustler_id = ? ORDER BY id DESC',
       [hustlerId]
     );
-    
-    // Option 2: If you don't want any sorting
-    // const [services] = await db.promise().query(
-    //   'SELECT * FROM services WHERE hustler_id = ?',
-    //   [hustlerId]
-    // );
-    
+
+    // Debug log to check the query result
+    console.log('Services found for hustlerId', hustlerId, ':', services);
+
     res.status(200).json(services);
   } catch (error) {
     console.error('Get hustler services error:', error);
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
-
 
 // ========================
 // Booking Route (For Customer Dashboard)
@@ -209,13 +212,11 @@ app.post('/bookings', async (req, res) => {
   }
 
   try {
-    // Check if service exists
     const [service] = await db.promise().query('SELECT * FROM services WHERE id = ?', [serviceId]);
     if (service.length === 0) {
       return res.status(404).json({ message: 'Service not found' });
     }
 
-    // Create booking
     await db.promise().execute(
       'INSERT INTO bookings (service_id, customer_id, status) VALUES (?, ?, "pending")',
       [serviceId, customerId]
@@ -227,18 +228,10 @@ app.post('/bookings', async (req, res) => {
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
+
 // ========================
 // Start the Server
 // ========================
 app.listen(port, () => {
   console.log(`🚀 Server is running at http://localhost:${port}`);
 });
-
-
-
-
-
-
-
-
-

@@ -27,7 +27,6 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       width: 400px;
-
     }
 
     .login-box h2 {
@@ -42,7 +41,6 @@
       margin-bottom: 1rem;
       border: 1px solid #ccc;
       border-radius: 10px;
-
     }
 
     .login-box button {
@@ -60,7 +58,6 @@
     }
   </style>
 </head>
-
 
 <body>
   <div class="login-box">
@@ -95,6 +92,10 @@
           return;
         }
 
+        // Store user details in local storage
+        localStorage.setItem("hustlerId", data.user.id);
+        localStorage.setItem("hustlerName", data.user.name);
+
         // Redirect based on role
         if (data.user.role === 'customer') {
           window.location.href = '../dashboards/cDashboard.html';
@@ -109,3 +110,6 @@
       }
     });
   </script>
+</body>
+
+</html>
