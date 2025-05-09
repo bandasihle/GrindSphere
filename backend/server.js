@@ -5,22 +5,18 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const db = require('./db'); // Make sure db.js exports a connected pool
+const db = require('./db');
 
 const app = express();
 const port = 3000;
 
-// ========================
 // Middleware
-// ========================
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ========================
 // Multer Setup
-// ========================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = 'uploads/';
@@ -37,9 +33,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// ========================
-// User Signup Route
-// ========================
+// Routes
 app.post('/signup', async (req, res) => {
   const { name, email, password, role, skill } = req.body;
 
@@ -64,9 +58,6 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-// ========================
-// User Login Route
-// ========================
 app.post('/login', async (req, res) => {
   const { email, password, role } = req.body;
 
@@ -104,9 +95,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// ========================
-// Create Service Route (Image Upload)
-// ========================
 app.post('/services/image', upload.single('image'), async (req, res) => {
   const { hustler_id, title, description, price, category, location } = req.body;
   const image_url = req.file ? `/uploads/${req.file.filename}` : null;
@@ -138,7 +126,7 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
     res.status(201).json({
       message: 'Service created successfully',
       serviceId: result.insertId,
-      image_url, // Send back the image URL in the response
+      image_url,
     });
   } catch (error) {
     console.error('Create service error:', error);
@@ -146,14 +134,71 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
   }
 });
 
-// ========================
-// Start the Server
-// ========================
+app.get('/services', async (req, res) => {
+  try {
+    const [services] = await db.promise().query(`
+      SELECT 
+        s.*,
+        u.name as hustler_name
+      FROM services s
+      JOIN users u ON s.hustler_id = u.id
+      ORDER BY s.created_at DESC
+    `);
+    res.status(200).json(services);
+  } catch (error) {
+    console.error('Get services error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
+app.get('/services/hustler', async (req, res) => {
+  const { hustlerId } = req.query;
+
+  if (!hustlerId) {
+    return res.status(400).json({ message: 'Hustler ID is required' });
+  }
+
+  try {
+    const [services] = await db.promise().query(
+      'SELECT * FROM services WHERE hustler_id = ? ORDER BY created_at DESC',
+      [hustlerId]
+    );
+    res.status(200).json(services);
+  } catch (error) {
+    console.error('Get hustler services error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
+app.post('/bookings', async (req, res) => {
+  const { serviceId, customerId } = req.body;
+
+  if (!serviceId || !customerId) {
+    return res.status(400).json({ message: 'Service ID and Customer ID are required' });
+  }
+
+  try {
+    const [service] = await db.promise().query('SELECT * FROM services WHERE id = ?', [serviceId]);
+    if (service.length === 0) {
+      return res.status(404).json({ message: 'Service not found' });
+    }
+
+    await db.promise().execute(
+      'INSERT INTO bookings (service_id, customer_id, status) VALUES (?, ?, "pending")',
+      [serviceId, customerId]
+    );
+
+    res.status(201).json({ message: 'Booking created successfully' });
+  } catch (error) {
+    console.error('Booking error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
+// Start server
 app.listen(port, () => {
   console.log(`🚀 Server is running at http://localhost:${port}`);
 });
-
-
 
 
 
