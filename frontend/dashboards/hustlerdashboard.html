@@ -8,13 +8,15 @@
   <link rel="stylesheet" href="/frontend/css/style.css" />
   <style>
     body {
-      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f7f7f7;
+      background: linear-gradient(135deg, #050305, #36123F, #624343, #8F37B1);
+      color: white;
+      margin: 0;
+      padding: 20px;
     }
 
     header {
-      background-color: #ac2a9f;
+      background-color: rgba(172, 42, 159, 0.8);
       color: white;
       padding: 1rem 2rem;
       display: flex;
@@ -27,16 +29,23 @@
     }
 
     .logout {
-      background-color: #fff;
-      color: #198754;
-      border: none;
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
       padding: 0.5rem 1rem;
       border-radius: 5px;
       cursor: pointer;
     }
 
+    .logout:hover {
+      background-color: white;
+      color: #ac2a9f;
+    }
+
     .container {
       padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .top-actions {
@@ -47,51 +56,87 @@
     }
 
     .top-actions button {
-      background-color: #f3f3f3;
-      color: rgb(207, 93, 93);
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
       padding: 0.6rem 1rem;
-      border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .top-actions button:hover {
+      background-color: white;
+      color: #ac2a9f;
     }
 
     .service-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2rem;
     }
 
     .service-card {
-      background-color: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      position: relative;
+      background-color: rgba(165, 145, 170, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
     .service-card h3 {
-      margin: 0.5rem 0;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .service-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-meta span {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
     }
 
     .service-card p {
-      font-size: 0.9rem;
-      color: #333;
-      margin: 0.3rem 0;
+      font-size: 1rem;
+      color: #e0e0e0;
+      margin: 0.5rem 0;
+      line-height: 1.5;
+    }
+
+    .service-description {
+      min-height: 100px;
     }
 
     .btn-group {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       display: flex;
-      gap: 0.5rem;
+      gap: 1rem;
     }
 
     .btn-edit,
     .btn-delete {
       flex: 1;
-      padding: 0.5rem;
+      padding: 0.8rem;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
     }
 
     .btn-edit {
@@ -99,17 +144,27 @@
       color: #000;
     }
 
+    .btn-edit:hover {
+      background-color: #e0a800;
+    }
+
     .btn-delete {
       background-color: #dc3545;
       color: #fff;
     }
 
+    .btn-delete:hover {
+      background-color: #b02a37;
+    }
+
     footer {
       text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 2rem;
+      padding: 1.5rem;
+      font-size: 1rem;
+      color: #e0e0e0;
+      margin-top: 3rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
     }
 
     .service-image {
@@ -117,25 +172,46 @@
       height: 180px;
       object-fit: cover;
       border-radius: 8px;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .service-card:hover .service-image {
+      transform: scale(1.05);
     }
 
     .empty-state {
       grid-column: 1/-1;
       text-align: center;
+      padding: 3rem;
     }
 
     .empty-state p {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.2rem;
     }
 
     .empty-state button {
-      background-color: #f3f3f3;
-      color: rgb(207, 93, 93);
-      padding: 0.6rem 1rem;
-      border: none;
-      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .empty-state button:hover {
+      background-color: white;
+      color: #ac2a9f;
+    }
+
+    @media (max-width: 768px) {
+      .service-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+      }
     }
   </style>
 </head>
@@ -165,7 +241,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       const hustlerName = localStorage.getItem("hustlerName");
       const hustlerId = localStorage.getItem("hustlerId");
-     
 
       if (!hustlerId) {
         alert("Please log in to access this page");
@@ -180,7 +255,6 @@
     function fetchHustlerServices() {
       const hustlerId = localStorage.getItem("hustlerId");
       
-      // Check if hustlerId is still not available
       if (!hustlerId) {
         document.getElementById("hustlerServices").innerHTML = 
           `<div class="empty-state">
@@ -216,7 +290,8 @@
                     style="margin-top: 1rem; padding: 0.5rem 1rem;">
               Create Your First Service
             </button>
-          </div>`;
+          </div>
+        `;
         return;
       }
 
@@ -227,10 +302,12 @@
         card.innerHTML = `
           <img src="${service.image_url}" alt="${service.title}" class="service-image">
           <h3>${service.title}</h3>
-          <p><strong>Category:</strong> ${service.category}</p>
-          <p><strong>Price:</strong> R${service.price}</p>
+          <div class="service-meta">
+            <span><strong>Category:</strong> ${service.category}</span>
+            <span><strong>Price:</strong> R${service.price}</span>
+          </div>
           <p><strong>Location:</strong> ${service.location}</p>
-          <p>${service.description}</p>
+          <p class="service-description">${service.description}</p>
           <div class="btn-group">
             <button class="btn-edit" onclick="editService(${service.id})">Edit</button>
             <button class="btn-delete" onclick="deleteService(${service.id})">Delete</button>
