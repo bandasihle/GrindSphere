@@ -7,68 +7,109 @@
   <link rel="stylesheet" href="/frontend/css/style.css"/>
   <style>
     body {
-      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
+      background: linear-gradient(135deg, #050305, #36123F, #624343, #8F37B1);
+      color: white;
+      margin: 0;
+      padding: 20px;
     }
+
     header {
-      background-color: #b93c9e;
+      background-color: rgba(172, 42, 159, 0.8);
       color: white;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
     .welcome {
       font-size: 1.5rem;
     }
+
     .logout {
-      background-color: #fff;
-      color: #0d6efd;
-      border: none;
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
       padding: 0.5rem 1rem;
       border-radius: 5px;
       cursor: pointer;
     }
+
+    .logout:hover {
+      background-color: white;
+      color: #ac2a9f;
+    }
+
     .container {
       padding: 2rem;
       max-width: 1200px;
       margin: 0 auto;
     }
+
     .search-bar {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
+
     .search-bar input,
     .search-bar select {
       padding: 0.5rem;
       border-radius: 5px;
-      border: 1px solid #ccc;
+      border: none;
       flex: 1;
       max-width: 300px;
     }
+
     .service-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.5rem;
     }
+
     .service-card {
-      background-color: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
+      background-color: rgba(165, 145, 170, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
     .service-card h3 {
-      margin: 0.5rem 0;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      color: white;
+      font-size: 1.5rem;
     }
-    .service-card p {
+
+    .service-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-meta span {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
       font-size: 0.9rem;
-      color: #333;
-      margin: 0.3rem 0;
     }
+
+    .service-card p {
+      font-size: 1rem;
+      color: #e0e0e0;
+      margin: 0.5rem 0;
+      line-height: 1.5;
+    }
+
     .book-btn {
       margin-top: 1rem;
       background-color: #0d6efd;
@@ -79,27 +120,45 @@
       cursor: pointer;
       transition: background-color 0.2s;
     }
+
     .book-btn:hover {
       background-color: #0b5ed7;
     }
+
     footer {
       text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 2rem;
+      padding: 1.5rem;
+      font-size: 1rem;
+      color: #e0e0e0;
+      margin-top: 3rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
     }
+
     .service-image {
       width: 100%;
       height: 180px;
       object-fit: cover;
       border-radius: 8px;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s ease;
     }
+
+    .service-card:hover .service-image {
+      transform: scale(1.05);
+    }
+
     .no-services {
       grid-column: 1/-1;
       text-align: center;
       padding: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .service-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+      }
     }
   </style>
 </head>
