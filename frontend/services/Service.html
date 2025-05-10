@@ -103,6 +103,46 @@
           width: 80%;
         }
       }
+
+  
+  /* Add this to your existing styles */
+  .blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .auth-prompt {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+  }
+  
+  .auth-prompt button {
+    background-color: #8f30a2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  body.blurred {
+  overflow: hidden;
+  height: 100vh;
+}
+
     </style>
 
 </head>
@@ -131,7 +171,7 @@
 
         <ul class="auth-links">
           <li><a href="authentication/signup.html" id="signup-btn" class="btns">Sign Up</a></li>
-          <li><a href="/frontend/authentication/signup.html" id="login-btn" class="btns">Login</a></li>
+          <li><a href="/frontend/authentication/login.html" id="login-btn" class="btns">Login</a></li>
         </ul>
       </div>
     </nav>
@@ -158,7 +198,14 @@
 
     </section>
 
-
+<div class="blur-overlay" id="blurOverlay">
+  <div class="auth-prompt">
+    <h2>Please Sign In</h2>
+    <p>You need to log in or sign up to view and manage your services.</p>
+    <button onclick="window.location.href='/frontend/authentication/login.html'">Log In</button>
+    <button onclick="window.location.href='/frontend/authentication/signup.html'">Sign Up</button>
+  </div>
+</div>
   
   <div class="services-grid">
     <!-- Service Cards -->
@@ -461,13 +508,41 @@
     });
   });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const hustlerName = localStorage.getItem("hustlerName");
+  const hustlerId = localStorage.getItem("hustlerId");
+  const blurOverlay = document.getElementById("blurOverlay");
+
+  if (!hustlerId) {
+    // Keep the blur overlay visible
+    blurOverlay.style.display = "flex";
+    return;
+  }
+
+  // User is authenticated, remove the blur overlay
+  blurOverlay.style.display = "none";
+  document.getElementById("hustlerName").textContent = hustlerName || "Your Name";
+  fetchHustlerServices();
+});
+
+// In DOMContentLoaded
+if (!hustlerId) {
+  document.body.classList.add("blurred");
+  blurOverlay.style.display = "flex";
+  return;
+}
+
+// In logout
+function logout() {
+  localStorage.clear();
+  document.body.classList.add("blurred");
+  document.getElementById("blurOverlay").style.display = "flex";
+  setTimeout(() => {
+    window.location.href = "/frontend/authentication/login.html";
+  }, 300);
+}
+
 </script>
-
-
-
-
- 
-
 
 
 </body>
