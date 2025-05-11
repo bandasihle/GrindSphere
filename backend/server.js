@@ -16,14 +16,14 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'backend/uploads')));
 
 // ========================
 // Multer Setup
 // ========================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = 'uploads/';
+    const uploadDir = 'backend/uploads/';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir);
     }
@@ -88,7 +88,6 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Incorrect password' });
     }
 
-    // Return the user details including role
     res.status(200).json({
       message: 'Login successful',
       user: {
@@ -139,7 +138,7 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
     res.status(201).json({
       message: 'Service created successfully',
       serviceId: result.insertId,
-      image_url, // Send back the image URL in the response
+      image_url: `/uploads/${req.file.filename}`, // Send back the image URL in the response
     });
   } catch (error) {
     console.error('Create service error:', error);

@@ -1,543 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customer Dashboard | GrindSphere</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard | GrindSphere</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7E22CE;
+            --primary-light: #A855F7;
+            --primary-dark: #731382;
+            --accent: #EC4899;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --info: #3B82F6;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(52, 185, 195, 0.575);
+            --glass-accent: rgba(255, 255, 255, 0.12);
+            --shadow-sm: 0 1px 2px 0 rgba(32, 231, 89, 0.86);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      /* Modern color palette */
-      --primary: #7E22CE;
-      --primary-light: #A855F7;
-      --primary-dark: #731382;
-      --accent: #EC4899;
-      --success: #10B981;
-      --warning: #F59E0B;
-      --danger: #EF4444;
-      --info: #3B82F6;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      /* Neutrals */
-      --gray-50: #F9FAFB;
-      --gray-100: #F3F4F6;
-      --gray-200: #E5E7EB;
-      --gray-700: #374151;
-      --gray-900: #111827;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #050305 0%, #36123F 50%, #624343 100%);
+            color: var(--gray-100);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
 
-      /* Glass morphism */
-      --glass: rgba(230, 28, 28, 0.922);
-      --glass-border: rgba(52, 185, 195, 0.575);
-      --glass-accent: rgba(255, 255, 255, 0.12);
+        header {
+            background: var(--primary-dark);
+            color: rgb(216, 219, 225);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-      /* Shadows */
-      --shadow-sm: 0 1px 2px 0 rgba(32, 231, 89, 0.86);
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        .welcome {
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
 
-      /* Transitions */
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+        .welcome span {
+            color: white;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        .logout {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #050305 0%, #36123F 50%, #624343 100%);
-      color: var(--gray-100);
-      min-height: 100vh;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+        .logout:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
 
-    /* Header - Matching Hustler Style */
-    header {
-      background: var(--primary-dark);
-      color: rgb(216, 219, 225);
-      padding: 1.2rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: var(--shadow-md);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
+        .container {
+            padding: 2rem;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
 
-    .welcome {
-      font-size: 1.3rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
 
-    .welcome span {
-      color: white;
-      background: linear-gradient(90deg, var(--primary-light), var(--primary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+        .search-bar input,
+        .search-bar select {
+            padding: 0.85rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            flex: 1;
+            min-width: 250px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
 
-    .logout {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      border: none;
-      padding: 0.6rem 1.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 500;
-    }
+        .search-bar input::placeholder {
+            color: rgba(152, 216, 234, 0.6);
+        }
 
-    .logout:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
-    }
+        .search-bar input:focus,
+        .search-bar select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3);
+            background: rgba(135, 19, 163, 0.796);
+        }
 
-    /* Main Content */
-    .container {
-      padding: 2rem;
-      max-width: 1440px;
-      margin: 0 auto;
-    }
+        .search-bar select {
+            appearance: none;
+            padding-right: 3rem;
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
 
-    /* Search Bar - Hustler Style */
-    .search-bar {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
-      flex-wrap: wrap;
-    }
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
 
-    .search-bar input,
-    .search-bar select {
-      padding: 0.85rem 1.5rem;
-      border-radius: 8px;
-      border: none;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      font-size: 1rem;
-      flex: 1;
-      min-width: 250px;
-      transition: var(--transition);
-      box-shadow: var(--shadow-sm);
-    }
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
 
-    .search-bar input::placeholder {
-      color: rgba(152, 216, 234, 0.6);
-    }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+            background: rgba(255, 255, 255, 0.08);
+        }
 
-    .search-bar input:focus,
-    .search-bar select:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3);
-      background: rgba(135, 19, 163, 0.796);
-    }
+        .service-image-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background: var(--primary-dark);
+        }
 
-    .search-bar select {
-      appearance: none;
-      padding-right: 3rem;
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      background-size: 1rem;
-    }
+        .service-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-    /* Service Grid - Hustler Card Style */
-    .service-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
-    }
+        .service-card:hover .service-image {
+            transform: scale(1.05);
+        }
 
-    .service-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      animation: fadeIn 0.6s ease-out forwards;
-      opacity: 0;
-    }
+        .service-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
 
-    .service-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--primary-light);
-      background: rgba(255, 255, 255, 0.08);
-    }
+        .service-card h3 {
+            font-size: 1.3rem;
+            color: rgb(104, 37, 145);
+            font-weight: 600;
+            margin: 0;
+        }
 
-    /* Image Container - Top Positioned */
-    .service-image-container {
-      height: 200px;
-      overflow: hidden;
-      position: relative;
-      background: var(--primary-dark);
-    }
+        .service-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
 
-    .service-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+        .service-meta span {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
 
-    .service-card:hover .service-image {
-      transform: scale(1.05);
-    }
+        .service-meta .price {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
 
-    /* Fallback for broken images */
-    .service-image-container.broken-image {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-    }
+        .service-card p {
+            color: var(--gray-200);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin: 0.5rem 0;
+        }
 
-    .service-image-container.broken-image::before {
-      content: "Image not available";
-      color: white;
-      font-size: 1rem;
-      text-align: center;
-      padding: 1rem;
-    }
+        .book-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.85rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
 
-    /* Service Content - Below Image */
-    .service-content {
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
+        .book-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
+        }
 
-    .service-card h3 {
-      font-size: 1.3rem;
-      color: rgb(104, 37, 145);
-      font-weight: 600;
-      margin: 0;
-    }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
 
-    .service-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
+        .no-services {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+        }
 
-    .service-meta span {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 0.35rem 0.9rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
+        .no-services i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-light);
+            opacity: 0.7;
+        }
 
-    .service-meta .price {
-      background: var(--primary);
-      color: white;
-      font-weight: 600;
-    }
+        .no-services h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
 
-    .service-card p {
-      color: var(--gray-200);
-      line-height: 1.6;
-      font-size: 0.95rem;
-      margin: 0.5rem 0;
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-    /* Book Button - Hustler Style */
-    .book-btn {
-      background: var(--primary);
-      color: white;
-      padding: 0.85rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      width: 100%;
-      margin-top: 1rem;
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .book-btn:hover {
-      background: var(--primary-light);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
-    }
+        .service-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
 
-    /* Footer - Minimal Style */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      margin-top: 4rem;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 0.9rem;
-    }
+        .service-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
 
-    /* No Services Message */
-    .no-services {
-      grid-column: 1/-1;
-      text-align: center;
-      padding: 3rem 2rem;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      border: 1px dashed rgba(255, 255, 255, 0.1);
-    }
+        .service-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
 
-    .no-services i {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      color: var(--primary-light);
-      opacity: 0.7;
-    }
+        .service-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
 
-    .no-services h3 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      color: white;
-    }
+        .service-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
 
-    /* Animations */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
+        .service-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
 
-    /* Stagger animations */
-    .service-card:nth-child(1) {
-      animation-delay: 0.1s;
-    }
+            .search-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
 
-    .service-card:nth-child(2) {
-      animation-delay: 0.2s;
-    }
+            .search-bar input,
+            .search-bar select {
+                min-width: 100%;
+            }
 
-    .service-card:nth-child(3) {
-      animation-delay: 0.3s;
-    }
+            header {
+                padding: 1rem;
+            }
 
-    .service-card:nth-child(4) {
-      animation-delay: 0.4s;
-    }
+            .welcome {
+                font-size: 1.1rem;
+            }
 
-    .service-card:nth-child(5) {
-      animation-delay: 0.5s;
-    }
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
-    .service-card:nth-child(6) {
-      animation-delay: 0.6s;
-    }
+        @media (max-width: 480px) {
+            .service-card {
+                border-radius: 10px;
+            }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .container {
-        padding: 1.5rem;
-      }
+            .service-content {
+                padding: 1.25rem;
+            }
 
-      .search-bar {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .search-bar input,
-      .search-bar select {
-        min-width: 100%;
-      }
-
-      header {
-        padding: 1rem;
-      }
-
-      .welcome {
-        font-size: 1.1rem;
-      }
-
-      .service-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .service-card {
-        border-radius: 10px;
-      }
-
-      .service-content {
-        padding: 1.25rem;
-      }
-
-      .service-card h3 {
-        font-size: 1.2rem;
-      }
-    }
-  </style>
-
+            .service-card h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
-
-
-
 <body>
-  <header>
-    <div class="welcome">Welcome, <span id="customerName">Customer Name</span> 👋</div>
-    <button class="logout" onclick="logout()">Logout</button>
-  </header>
+    <header>
+        <div class="welcome">Welcome, <span id="customerName">Customer Name</span> 👋</div>
+        <button class="logout" onclick="logout()">Logout</button>
+    </header>
 
-  <div class="container">
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search for services...">
-      <select id="categoryFilter">
-        <option value="">All Categories</option>
-        <option value="Tutoring">Tutoring</option>
-        <option value="Cleaning">Cleaning</option>
-        <option value="Design">Design</option>
-        <option value="IT Support">IT Support</option>
-        <option value="Photography">Photography</option>
-        <option value="Writing">Writing</option>
-      </select>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for services...">
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="Tutoring">Tutoring</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Design">Design</option>
+                <option value="IT Support">IT Support</option>
+                <option value="Photography">Photography</option>
+                <option value="Writing">Writing</option>
+            </select>
+        </div>
+
+        <div class="service-grid" id="serviceList">
+            <!-- Services will be loaded here -->
+        </div>
     </div>
 
-    <div class="service-grid" id="serviceList">
-      <!-- Services will be loaded here -->
-    </div>
-  </div>
+    <footer>
+        &copy; 2025 GrindSphere. Empowering Students through Hustles.
+    </footer>
 
-  <footer>
-    &copy; 2025 GrindSphere. Empowering Students through Hustles.
-  </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const customerName = localStorage.getItem("customerName");
+            const customerId = localStorage.getItem("customerId");
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const customerName = localStorage.getItem("customerName");
-      const customerId = localStorage.getItem("customerId");
+            if (!customerId) {
+                alert("Please log in to access this page");
+                window.location.href = "/frontend/authentication/login.html";
+                return;
+            }
 
-      if (!customerId) {
-        alert("Please log in to access this page");
-        window.location.href = "/GrindSphere/frontend/authentication/login.html";
-        return;
-      }
+            document.getElementById("customerName").textContent = customerName || "Customer";
+            fetchServices();
 
-      document.getElementById("customerName").textContent = customerName || "Customer";
-      fetchServices();
-
-      document.getElementById("searchInput").addEventListener("input", fetchServices);
-      document.getElementById("categoryFilter").addEventListener("change", fetchServices);
-    });
-
-    function fetchServices() {
-      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-      const category = document.getElementById("categoryFilter").value;
-
-      fetch('http://localhost:3000/services')
-        .then(res => {
-          if (!res.ok) throw new Error('Failed to fetch services');
-          return res.json();
-        })
-        .then(data => {
-          const filtered = data.filter(service => {
-            const matchesCategory = category === "" || service.category === category;
-            const matchesSearch = service.title.toLowerCase().includes(searchTerm) ||
-              service.description.toLowerCase().includes(searchTerm) ||
-              service.hustler_name.toLowerCase().includes(searchTerm);
-            return matchesCategory && matchesSearch;
-          });
-
-          renderServices(filtered);
-        })
-        .catch(err => {
-          console.error("Failed to fetch services:", err);
-          document.getElementById("serviceList").innerHTML =
-            `<div class="no-services"><p>Error loading services. Please try again later.</p></div>`;
+            document.getElementById("searchInput").addEventListener("input", fetchServices);
+            document.getElementById("categoryFilter").addEventListener("change", fetchServices);
         });
-    }
 
-    function renderServices(services) {
-      const container = document.getElementById("serviceList");
-      container.innerHTML = "";
+        function fetchServices() {
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            const category = document.getElementById("categoryFilter").value;
 
-      if (services.length === 0) {
-        container.innerHTML = `
-          <div class="no-services">
-            <p>No services found matching your criteria.</p>
-          </div>`;
-        return;
-      }
+            fetch('http://localhost:3000/services')
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to fetch services');
+                    return res.json();
+                })
+                .then(data => {
+                    const filtered = data.filter(service => {
+                        const matchesCategory = category === "" || service.category === category;
+                        const matchesSearch = service.title.toLowerCase().includes(searchTerm) ||
+                            service.description.toLowerCase().includes(searchTerm) ||
+                            service.hustler_name.toLowerCase().includes(searchTerm);
+                        return matchesCategory && matchesSearch;
+                    });
 
-      services.forEach(service => {
-        const card = document.createElement("div");
-        card.className = "service-card";
+                    renderServices(filtered);
+                })
+                .catch(err => {
+                    console.error("Failed to fetch services:", err);
+                    document.getElementById("serviceList").innerHTML =
+                        `<div class="no-services"><p>Error loading services. Please try again later.</p></div>`;
+                });
+        }
 
-        card.innerHTML = `
-          <img src="${service.image_url}" alt="${service.title}" class="service-image">
-          <h3>${service.title}</h3>
-          <p><strong>By:</strong> ${service.hustler_name}</p>
-          <p><strong>Category:</strong> ${service.category}</p>
-          <p><strong>Price:</strong> R${service.price}</p>
-          <p><strong>Location:</strong> ${service.location}</p>
-          <p>${service.description}</p>
-          <button class="book-btn" onclick="bookService(${service.id})">Book Now</button>
-        `;
+        function renderServices(services) {
+            const container = document.getElementById("serviceList");
+            container.innerHTML = "";
 
-        container.appendChild(card);
-      });
-    }
+            if (services.length === 0) {
+                container.innerHTML = `
+                    <div class="no-services">
+                        <p>No services found matching your criteria.</p>
+                    </div>`;
+                return;
+            }
 
-    function bookService(serviceId) {
-      const customerId = localStorage.getItem("customerId");
-      if (!customerId) {
-        alert("Please log in again.");
-        window.location.href = "GrindSphere/frontend/authentication/login.html";
-        return;
-      }
+            services.forEach(service => {
+                const card = document.createElement("div");
+                card.className = "service-card";
 
-      if (!confirm("Are you sure you want to book this service?")) return;
+                card.innerHTML = `
+                    <div class="service-image-container">
+                        <img src="http://localhost:3000${service.image_url}" alt="${service.title}" class="service-image" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                    </div>
+                    <div class="service-content">
+                        <h3>${service.title}</h3>
+                        <p><strong>By:</strong> ${service.hustler_name}</p>
+                        <p><strong>Category:</strong> ${service.category}</p>
+                        <p><strong>Price:</strong> R${service.price}</p>
+                        <p><strong>Location:</strong> ${service.location}</p>
+                        <p>${service.description}</p>
+                        <button class="book-btn" onclick="bookService(${service.id})">Book Now</button>
+                    </div>
+                `;
 
-      fetch('http://localhost:3000/bookings', {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ serviceId, customerId })
-      })
-        .then(res => {
-          if (!res.ok) throw new Error('Booking failed');
-          return res.json();
-        })
-        .then(() => {
-          alert("Booking confirmed! The hustler will contact you soon.");
-        })
-        .catch(err => {
-          console.error("Booking failed:", err);
-          alert("Failed to book the service. Please try again.");
-        });
-    }
+                container.appendChild(card);
+            });
+        }
 
-    function logout() {
-      localStorage.clear();
-      window.location.href = "GrindSphere/frontend/authentication/login.html";
-    }
-  </script>
+        function bookService(serviceId) {
+            const customerId = localStorage.getItem("customerId");
+            if (!customerId) {
+                alert("Please log in again.");
+                window.location.href = "/frontend/authentication/login.html";
+                return;
+            }
+
+            if (!confirm("Are you sure you want to book this service?")) return;
+
+            fetch('http://localhost:3000/bookings', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ serviceId, customerId })
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('Booking failed');
+                    return res.json();
+                })
+                .then(() => {
+                    alert("Booking confirmed! The hustler will contact you soon.");
+                })
+                .catch(err => {
+                    console.error("Booking failed:", err);
+                    alert("Failed to book the service. Please try again.");
+                });
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "/frontend/authentication/login.html";
+        }
+    </script>
 </body>
-
 </html>

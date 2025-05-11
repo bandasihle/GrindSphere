@@ -1,459 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hustler Dashboard | GrindSphere</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hustler Dashboard | GrindSphere</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7e22ce;
+            --primary-light: #9333ea;
+            --primary-dark: #5b21b6;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --light: #f9fafb;
+            --dark: #1f2937;
+            --glass: rgba(255, 255, 255, 0.2);
+        }
 
-  <style>
-    :root {
-      --primary: #7e22ce;
-      --primary-light: #9333ea;
-      --primary-dark: #5b21b6;
-      --secondary: #10b981;
-      --danger: #ef4444;
-      --light: #f9fafb;
-      --dark: #1f2937;
-      --gray: #6b7280;
-      --glass: rgba(255, 255, 255, 0.2);
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #050305 0%, #36123F 50%, #624343 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #050305 0%, #36123F 50%, #624343 100%);
-      color: white;
-      min-height: 100vh;
-      padding: 2rem;
-    }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
 
-    /* Header */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      animation: fadeIn 0.8s ease-out;
-    }
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #a855f7, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
 
-    .header h1 {
-      font-size: 2.5rem;
-      background: linear-gradient(to right, #a855f7, #10b981);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-weight: 700;
-    }
+        .btn-create {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(126, 34, 206, 0.4);
+        }
 
-    .btn-create {
-      background: var(--primary);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      box-shadow: 0 4px 15px rgba(126, 34, 206, 0.4);
-    }
+        .btn-create:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(126, 34, 206, 0.6);
+        }
 
-    .btn-create:hover {
-      background: var(--primary-light);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(126, 34, 206, 0.6);
-    }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
 
-    /* Services Grid */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
+        .service-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            animation: cardEntrance 0.6s ease-out;
+            animation-fill-mode: backwards;
+        }
 
-    .service-card {
-      background: var(--glass);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-      animation: cardEntrance 0.6s ease-out;
-      animation-fill-mode: backwards;
-    }
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(126, 34, 206, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
 
-    .service-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 15px 30px rgba(126, 34, 206, 0.4);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
+        .service-image-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
 
-    .service-image-container {
-      height: 200px;
-      overflow: hidden;
-      position: relative;
-    }
+        .service-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
 
-    .service-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
+        .service-details {
+            padding: 1.5rem;
+            position: relative;
+        }
 
-    .service-card:hover .service-image {
-      transform: scale(1.1);
-    }
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .service-details {
-      padding: 1.5rem;
-      position: relative;
-    }
+        .service-title i {
+            color: var(--primary-light);
+        }
 
-    .service-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: white;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        .service-meta {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
 
-    .service-title i {
-      color: var(--primary-light);
-    }
+        .service-meta.visible {
+            max-height: 200px;
+            opacity: 1;
+        }
 
-    .service-meta {
-      color: rgba(255, 255, 255, 0.8);
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease, opacity 0.3s ease;
-      opacity: 0;
-    }
+        .service-meta span {
+            display: block;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
 
-    .service-meta.visible {
-      max-height: 200px;
-      opacity: 1;
-    }
+        .service-meta span::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-light);
+            font-weight: bold;
+        }
 
-    .service-meta span {
-      display: block;
-      margin-bottom: 0.5rem;
-      padding-left: 1.5rem;
-      position: relative;
-    }
+        .service-description {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin: 1rem 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
 
-    .service-meta span::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: var(--primary-light);
-      font-weight: bold;
-    }
+        .service-description.visible {
+            max-height: 200px;
+            opacity: 1;
+        }
 
-    .service-description {
-      color: rgba(255, 255, 255, 0.9);
-      line-height: 1.6;
-      margin: 1rem 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease, opacity 0.3s ease;
-      opacity: 0;
-    }
+        .btn-more {
+            background: linear-gradient(to right, #7e22ce, #9333ea);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
 
-    .service-description.visible {
-      max-height: 200px;
-      opacity: 1;
-    }
+        .btn-more:hover {
+            background: linear-gradient(to right, #6b21a8, #7e22ce);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(126, 34, 206, 0.2);
+        }
 
-    /* Purple View/Hide Details Button */
-    .btn-more {
-      background: linear-gradient(to right, #7e22ce, #9333ea);
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      margin-top: 0.5rem;
-    }
+        .btn-more.active {
+            background: linear-gradient(to right, #5b21b6, #6b21a8);
+        }
 
-    .btn-more:hover {
-      background: linear-gradient(to right, #6b21a8, #7e22ce);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(126, 34, 206, 0.2);
-    }
+        .btn-more i {
+            transition: transform 0.3s ease;
+        }
 
-    .btn-more.active {
-      background: linear-gradient(to right, #5b21b6, #6b21a8);
-    }
+        .btn-more.active i {
+            transform: rotate(180deg);
+        }
 
-    .btn-more i {
-      transition: transform 0.3s ease;
-    }
+        .service-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
 
-    .btn-more.active i {
-      transform: rotate(180deg);
-    }
+        .service-card:hover .service-actions {
+            opacity: 1;
+        }
 
-    .service-actions {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1.5rem;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
+        .btn-edit,
+        .btn-delete {
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .service-card:hover .service-actions {
-      opacity: 1;
-    }
+        .btn-edit {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
 
-    .btn-edit,
-    .btn-delete {
-      padding: 0.5rem 1.25rem;
-      border-radius: 50px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        .btn-edit:hover {
+            background: #0e9f72;
+            transform: translateY(-3px);
+        }
 
-    .btn-edit {
-      background: var(--secondary);
-      color: white;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-    }
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
 
-    .btn-edit:hover {
-      background: #0e9f72;
-      transform: translateY(-3px);
-    }
+        .btn-delete:hover {
+            background: #dc2626;
+            transform: translateY(-3px);
+        }
 
-    .btn-delete {
-      background: var(--danger);
-      color: white;
-      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-    .btn-delete:hover {
-      background: #dc2626;
-      transform: translateY(-3px);
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    /* Animations */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
-    @keyframes cardEntrance {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
 
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
-    }
-  </style>
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="header">
-    <h1><i class="fas fa-rocket"></i> Welcome, Sihle Banda</h1>
-    <button class="btn-create" onclick="location.href='/frontend/create-service.html'">
-      + Create New Service
-    </button>
-  </div>
+    <div class="header">
+        <h1><i class="fas fa-rocket"></i> Welcome, Sihle Banda</h1>
+        <button class="btn-create" onclick="location.href='/frontend/create-service.html'">
+            + Create New Service
+        </button>
+    </div>
 
-  <h2 style="font-size: 1.75rem; margin-bottom: 1rem; color: rgba(255,255,255,0.9);">
-    <i class="fas fa-th-list"></i> Your Services
-  </h2>
+    <h2 style="font-size: 1.75rem; margin-bottom: 1rem; color: rgba(255,255,255,0.9);">
+        <i class="fas fa-th-list"></i> Your Services
+    </h2>
 
-  <div class="services-grid">
-    <!-- Service cards will be inserted here by JavaScript -->
-  </div>
+    <div class="services-grid" id="servicesGrid">
+        <!-- Service cards will be inserted here by JavaScript -->
+    </div>
 
-  <script>
-    // [Previous JavaScript code remains exactly the same]
-    document.addEventListener("DOMContentLoaded", () => {
-      const hustlerName = localStorage.getItem("hustlerName");
-      const hustlerId = localStorage.getItem("hustlerId");
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const hustlerName = localStorage.getItem("hustlerName");
+            const hustlerId = localStorage.getItem("hustlerId");
 
-      if (!hustlerId) {
-        alert("Please log in to access this page");
-        window.location.href = "/frontend/authentication/login.html";
-        return;
-      }
+            if (!hustlerId) {
+                alert("Please log in to access this page");
+                window.location.href = "/frontend/authentication/login.html";
+                return;
+            }
 
-      document.querySelector("h1").innerHTML = `<i class="fas fa-rocket"></i> Welcome, ${hustlerName || "Hustler"}`;
-      fetchHustlerServices();
-    });
-
-    async function fetchHustlerServices() {
-      const hustlerId = localStorage.getItem("hustlerId");
-      const container = document.querySelector(".services-grid");
-
-      try {
-        const response = await fetch(`http://localhost:3000/services/hustler?hustlerId=${hustlerId}`);
-
-        if (!response.ok) throw new Error('Failed to fetch services');
-
-        const services = await response.json();
-        renderServices(services);
-
-      } catch (error) {
-        console.error("Error:", error);
-        container.innerHTML = `
-          <div class="empty-state">
-            <p>Error loading services. Please try again later.</p>
-          </div>
-        `;
-      }
-    }
-
-    function renderServices(services) {
-      const container = document.querySelector(".services-grid");
-      container.innerHTML = "";
-
-      if (services.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <p>You haven't listed any services yet.</p>
-            <button class="btn-create" onclick="location.href='/frontend/create-service.html'">
-              Create Your First Service
-            </button>
-          </div>
-        `;
-        return;
-      }
-
-      services.forEach((service, index) => {
-        const card = document.createElement("div");
-        card.className = "service-card";
-        card.style.animationDelay = `${index * 0.1}s`;
-
-        card.innerHTML = `
-          <div class="service-image-container">
-            <img src="${service.image_url}" alt="${service.title}" class="service-image">
-          </div>
-          <div class="service-details">
-            <h3 class="service-title"><i class="fas fa-${getServiceIcon(service.category)}"></i> ${service.title}</h3>
-            <div class="service-meta">
-              <span><strong>Category:</strong> ${service.category}</span>
-              <span><strong>Price:</strong> R${service.price}</span>
-              <span><strong>Location:</strong> ${service.location}</span>
-            </div>
-            <p class="service-description">${service.description}</p>
-            <button class="btn-more" onclick="toggleDetails(this)">
-              <span>View Details</span>
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="service-actions">
-              <button class="btn-edit" onclick="editService('${service.id}')">
-                <i class="fas fa-edit"></i> Edit
-              </button>
-              <button class="btn-delete" onclick="deleteService('${service.id}')">
-                <i class="fas fa-trash"></i> Delete
-              </button>
-            </div>
-          </div>
-        `;
-
-        container.appendChild(card);
-      });
-    }
-
-    function getServiceIcon(category) {
-      const icons = {
-        'Education': 'chalkboard-teacher',
-        'Photography': 'camera',
-        'Design': 'paint-brush',
-        'Cleaning': 'broom',
-        'IT': 'laptop-code'
-      };
-      return icons[category] || 'rocket';
-    }
-
-    function toggleDetails(button) {
-      const card = button.closest('.service-details');
-      const meta = card.querySelector('.service-meta');
-      const description = card.querySelector('.service-description');
-
-      meta.classList.toggle('visible');
-      description.classList.toggle('visible');
-
-      const isVisible = meta.classList.contains('visible');
-      button.querySelector('span').textContent = isVisible ? 'Hide Details' : 'View Details';
-      button.classList.toggle('active', isVisible);
-    }
-
-    function editService(serviceId) {
-      window.location.href = `/frontend/edit-service.html?id=${serviceId}`;
-    }
-
-    async function deleteService(serviceId) {
-      if (!confirm("Are you sure you want to delete this service?")) return;
-
-      try {
-        const response = await fetch(`http://localhost:3000/services/${serviceId}`, {
-          method: 'DELETE'
+            document.querySelector("h1").innerHTML = `<i class="fas fa-rocket"></i> Welcome, ${hustlerName || "Hustler"}`;
+            fetchHustlerServices();
         });
 
-        if (!response.ok) throw new Error('Failed to delete service');
+        async function fetchHustlerServices() {
+            const hustlerId = localStorage.getItem("hustlerId");
+            const container = document.getElementById("servicesGrid");
 
-        alert("Service deleted successfully");
-        fetchHustlerServices();
+            try {
+                const response = await fetch(`http://localhost:3000/services/hustler?hustlerId=${hustlerId}`);
 
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Failed to delete service. Please try again.");
-      }
-    }
-  </script>
+                if (!response.ok) throw new Error('Failed to fetch services');
+
+                const services = await response.json();
+                renderServices(services);
+
+            } catch (error) {
+                console.error("Error:", error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>Error loading services. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderServices(services) {
+            const container = document.getElementById("servicesGrid");
+            container.innerHTML = "";
+
+            if (services.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>You haven't listed any services yet.</p>
+                        <button class="btn-create" onclick="location.href='/frontend/create-service.html'">
+                            Create Your First Service
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            services.forEach((service, index) => {
+                const card = document.createElement("div");
+                card.className = "service-card";
+                card.style.animationDelay = `${index * 0.1}s`;
+
+                card.innerHTML = `
+                    <div class="service-image-container">
+                        <img src="http://localhost:3000${service.image_url}" alt="${service.title}" class="service-image" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                    </div>
+                    <div class="service-details">
+                        <h3 class="service-title"><i class="fas fa-${getServiceIcon(service.category)}"></i> ${service.title}</h3>
+                        <div class="service-meta">
+                            <span><strong>Category:</strong> ${service.category}</span>
+                            <span><strong>Price:</strong> R${service.price}</span>
+                            <span><strong>Location:</strong> ${service.location}</span>
+                        </div>
+                        <p class="service-description">${service.description}</p>
+                        <button class="btn-more" onclick="toggleDetails(this)">
+                            <span>View Details</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="service-actions">
+                            <button class="btn-edit" onclick="editService('${service.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn-delete" onclick="deleteService('${service.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function getServiceIcon(category) {
+            const icons = {
+                'Tutoring': 'chalkboard-teacher',
+                'Cleaning': 'broom',
+                'Design': 'paint-brush',
+                'IT Support': 'laptop-code',
+                'Photography': 'camera',
+                'Writing': 'pen-fancy'
+            };
+            return icons[category] || 'rocket';
+        }
+
+        function toggleDetails(button) {
+            const card = button.closest('.service-details');
+            const meta = card.querySelector('.service-meta');
+            const description = card.querySelector('.service-description');
+
+            meta.classList.toggle('visible');
+            description.classList.toggle('visible');
+
+            const isVisible = meta.classList.contains('visible');
+            button.querySelector('span').textContent = isVisible ? 'Hide Details' : 'View Details';
+            button.classList.toggle('active', isVisible);
+        }
+
+        function editService(serviceId) {
+            window.location.href = `/frontend/edit-service.html?id=${serviceId}`;
+        }
+
+        async function deleteService(serviceId) {
+            if (!confirm("Are you sure you want to delete this service?")) return;
+
+            try {
+                const response = await fetch(`http://localhost:3000/services/${serviceId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Failed to delete service');
+
+                alert("Service deleted successfully");
+                fetchHustlerServices();
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Failed to delete service. Please try again.");
+            }
+        }
+    </script>
 </body>
-
 </html>
