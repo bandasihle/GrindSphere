@@ -72,9 +72,7 @@ Side-Hustle-Web-Dev-1/
 │ └── styles/
 └── README.md
 
-yaml
-Copy
-Edit
+
 
 ---
 
