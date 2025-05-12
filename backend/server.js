@@ -16,16 +16,18 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads', express.static(path.join(__dirname, 'backend/uploads')));
+
+// ✅ Corrected uploads static path
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ========================
 // Multer Setup
 // ========================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = 'backend/uploads/';
+    const uploadDir = path.join(__dirname, 'uploads'); // ✅ Corrected path
     if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
+      fs.mkdirSync(uploadDir, { recursive: true });
     }
     cb(null, uploadDir);
   },
@@ -138,7 +140,7 @@ app.post('/services/image', upload.single('image'), async (req, res) => {
     res.status(201).json({
       message: 'Service created successfully',
       serviceId: result.insertId,
-      image_url: `/uploads/${req.file.filename}`, // Send back the image URL in the response
+      image_url: `/uploads/${req.file.filename}`,
     });
   } catch (error) {
     console.error('Create service error:', error);
@@ -172,8 +174,6 @@ app.get('/services', async (req, res) => {
 app.get('/services/hustler', async (req, res) => {
   const { hustlerId } = req.query;
 
-  console.log('Received hustlerId from query:', hustlerId);
-
   if (!hustlerId) {
     return res.status(400).json({ message: 'Hustler ID is required' });
   }
@@ -187,8 +187,6 @@ app.get('/services/hustler', async (req, res) => {
       'SELECT * FROM services WHERE hustler_id = ? ORDER BY id DESC',
       [hustlerId]
     );
-
-    console.log('Services found for hustlerId', hustlerId, ':', services);
 
     res.status(200).json(services);
   } catch (error) {
