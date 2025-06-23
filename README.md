@@ -128,16 +128,7 @@ Booking system or messaging feature
 
 Admin panel for moderation
 
-Deployment to live server
-
-👨‍💻 Team
-Sihle Vusi Banda 
-Faith Mathebula
-Suprise Mahlalela
-Lesego Mahlakoane
-Precious Nkosi
-Amelia Nkwinika
-Rendani Ramaphosa 
+Deployment to live servet
 
 
 
