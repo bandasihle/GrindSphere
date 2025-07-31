@@ -85,8 +85,7 @@ Side-Hustle-Web-Dev-1/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/Side-Hustle-Web-Dev-1.git
-cd Side-Hustle-Web-Dev-1/backend/nodejs
+git clone https://github.com/bandasihle/GrindSphere
 2. Install Dependencies
 bash
 Copy
