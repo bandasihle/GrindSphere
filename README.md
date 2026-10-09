@@ -82,57 +82,58 @@ GrindSphere/
 ## 🧪 How to Run Locally
 
 ### Prerequisites
-- Node.js installed
+- Node.js
 - XAMPP with MySQL running
-- Git (optional)
 
-### 1. Clone the Repository
+### 1. Clone and install
+
 ```bash
 git clone https://github.com/bandasihle/GrindSphere
-2. Install Dependencies
-bash
-Copy
-Edit
+cd GrindSphere
 npm install
-3. Set Up the Database
-Open XAMPP and start Apache and MySQL
+```
 
-Create a database named: grind_sphere
+### 2. Set up the database
 
-Import the SQL file with tables like users and services
-(Make sure users table has a hustler_id and proper login fields)
+1. Open XAMPP and start **Apache** and **MySQL**.
+2. Create a database named `grind_sphere`.
+3. Create the tables the server uses. The SQL file is not in this repo yet, so create them in phpMyAdmin:
+   - `users`: `id`, `name`, `email`, `password`, `role` (`hustler` or `customer`), `skill`, `is_admin`
+   - `services`: `id`, `hustler_id`, `title`, `description`, `price`, `category`, `location`, `image_url`
+   - `bookings`: `id`, `service_id`, `customer_id`, `status`
 
-4. Start the Server
-bash
-Copy
-Edit
-node server.js
-Server will run at: http://localhost:3000
+The connection settings (user `root`, no password, port 3306) are in `backend/db.js`.
 
-5. Open the Frontend
-Open the HTML files (e.g., index.html) in your browser using Live Server or file path.
+### 3. Start the server
 
-🛡️ Security & Validation
-User inputs are validated to prevent SQL injection.
+```bash
+node backend/server.js
+```
 
-Passwords are stored using hashing (e.g., bcrypt).
+The server runs at http://localhost:3000.
 
-Authentication uses session/cookie logic or token-based approach (depending on implementation).
+### 4. Open the frontend
 
-🚀 Future Improvements
-Ratings & reviews for hustlers
+Open `frontend/index.html` with VS Code Live Server (or straight from the folder).
 
-Profile pages for each hustler
+---
 
-Filter by category (e.g., tutoring, beauty, printing)
+## 🛡️ Security & Validation
+- Database queries use placeholders (`?`), which protects against SQL injection.
+- Passwords are hashed with bcrypt.
+- `/admin/create-admin` is a setup-only route with a default password. Remove it, or change the password, before putting the site online.
 
-Booking system or messaging feature
+---
 
-Admin panel for moderation
+## 🚀 Future Improvements
+- Ratings and reviews for hustlers
+- Profile pages for each hustler
+- Filter by category (e.g. tutoring, beauty, printing)
+- Booking system or messaging
+- Admin panel for moderation
+- Deployment to a live server
 
-Deployment to live servet
+---
 
-
-
-📜 License
+## 📜 License
 This project is for educational purposes under the University of Mpumalanga Web Development module.
