@@ -58,21 +58,24 @@ However, most of them promote their services in **academic WhatsApp groups**, wh
 
 ## 📁 Project Structure
 
-Side-Hustle-Web-Dev-1/
+```
+GrindSphere/
 ├── backend/
-│ └── nodejs/
-│ ├── server.js
-│ ├── package.json
-│ └── routes/ (e.g., auth.js, hustlers.js)
+│   ├── server.js          Express server: auth, services, uploads
+│   ├── db.js              MySQL connection
+│   ├── admin/             admin routes and controller
+│   ├── views/             EJS templates
+│   └── uploads/           service images uploaded by hustlers
 ├── frontend/
-│ ├── index.html
-│ ├── login.html
-│ ├── signup.html
-│ ├── dashboard.html
-│ └── styles/
+│   ├── index.html, about.html, contact.html, team.html
+│   ├── authentication/    login and sign-up pages
+│   ├── dashboards/        customer and hustler dashboards
+│   ├── admin/             admin dashboard
+│   ├── services/          service listing pages
+│   └── css/, images/, script.js
+├── package.json
 └── README.md
-
-
+```
 
 ---
 
